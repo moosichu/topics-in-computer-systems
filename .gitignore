@@ -1,6 +1,9 @@
 
 # Created by https://www.gitignore.io/api/latex
 
+*.pdf
+
+
 ### LaTeX ###
 ## Core latex/pdflatex auxiliary files:
 *.aux
