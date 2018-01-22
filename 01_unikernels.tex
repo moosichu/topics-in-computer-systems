@@ -17,7 +17,7 @@
 \textsl{3--5 sentences. Briefly summarise the {\bf contributions} of the paper,
 i.e.,~what it adds over the state of the art. Paraphrase and extract the
 essentials rather than simply copying chunks of text. Be objective; later
-sections allow for your own opinion.} %% Type your text below
+sections allow for your own opinion.}
 
 TODO
 
@@ -25,8 +25,15 @@ TODO
 \section*{Pros and Cons}
 
 \textsl{6 bullets. Succinctly state three positives and three negatives of the
-paper.} %% Type your text below
+paper.}
 
+Pros:
+
+\begin{itemize}
+
+    \item XeN is
+
+\end{itemize}
 
 Cons:
 
@@ -37,43 +44,83 @@ Cons:
     %    https://www.theregister.co.uk/2017/11/07/aws_writes_new_kvm_based_hypervisor_to_make_its_cloud_go_faster/
 
 
-    \item The text in the entries may be of any length.
+    \item The world has moved on from VMs to containers
+
+    \item KVM is lightweight? TODO: check KVM support for this!
+
+    \item OCaml, despite its features, isn't a pragmatic language choice
 
 \end{itemize}
 
 
 \section*{The Problem/Motivation}
 
-\textsl{1--2 sentences per question. What is the motivation for the work, or the problem being solved? Why is it important? If there is prior art, how was it insufficient? If the problem had not previously been solved, why not?}
-%% Type your text below
+\textsl{1--2 sentences per question. What is the motivation for the work, or
+the problem being solved? Why is it important? If there is prior art, how was
+it insufficient? If the problem had not previously been solved, why not?}
 
 The way internet services have been used and deployed has evolved and developed
 significantly over the past few years, mainly with the growing use of
-hypersisors and many heavyweight Virtual Machines.
+hypervisor and many heavyweight Virtual Machines. However, spawning complete
+instances operating systems (such as GNU/Linux, or Windows) which then execute
+a single task (eg. a web server, or a database) could be considered wasteful.
+
+The problem is important because of the scale at which these systems operate,
+with estimates that Amazon's EC2 is made up almost 500,000 servers
+\cite{EC2Amount}. Any kind of resource savings, in computation, power or
+memory, however minor for individual instances, can have major consequences
+at scale.
+
+TODO: PRIOR art
+
+The thing about the problem in question, of resources being question, is a
+problem where incremental improvements could always be possible and beneficial.
+Due to the rapidly advancing nature of the systems in question, optimisations
+will be possible for the foreseeable future. There is also the question of
+tradeoffs, where the number of variables in play mean that some solutions will
+always have some advantages compared to others based on the tradeoffs they
+make.
 
 
 \section*{The Solution/Approach}
 
-\textsl{5--10 sentences. What have they done? How does it address the issues set out above? How is it unique and/or innovative (if, indeed, it is)? Give details, again using the paper as the source but again, not just copying text. Instead, focus on paraphrasing/synopsising, and extracting the essential details.}
-%% Type your text below
+\textsl{5--10 sentences. What have they done? How does it address the issues
+set out above? How is it unique and/or innovative (if, indeed, it is)? Give
+details, again using the paper as the source but again, not just copying text.
+Instead, focus on paraphrasing/synopsising, and extracting the essential
+details.} %% Type your text below
+
+TODO:
 
 
 \section*{Evaluation}
 
-\textsl{3--4 sentences. How do they evaluate their work? What questions does their evaluation set out to answer? What does their evaluation say about the strengths and weaknesses of their system? What is your opinion of the strengths and weaknesses of the evaluation itself?  Give highlights, not a point by point reproduction of the evaluation section(s). In rare cases, systems papers may not have any evaluation, in which case write `N/A' below.}
-%% Type your text below
+\textsl{3--4 sentences. How do they evaluate their work? What questions does
+their evaluation set out to answer? What does their evaluation say about the
+strengths and weaknesses of their system? What is your opinion of the strengths
+and weaknesses of the evaluation itself? Give highlights, not a point by point
+reproduction of the evaluation section(s). In rare cases, systems papers may
+not have any evaluation, in which case write `N/A' below.}
+
+TODO:
 
 
 \section*{Your Opinion}
 
-\textsl{At least 3 sentences. This is the fun part where you get to judge both the paper and the work it reports! Is the motivation convincing? The problem important? The approach a good or bad idea?  Why? Which specific things annoyed you, or you thought were cool, or cool-but-flawed? Justify your opinions! Make an argument  which will convince others of your opinion.}
-%% Type your text below
+\textsl{At least 3 sentences. This is the fun part where you get to judge both
+the paper and the work it reports! Is the motivation convincing? The problem
+important? The approach a good or bad idea? Why? Which specific things annoyed
+you, or you thought were cool, or cool-but-flawed? Justify your opinions! Make
+an argument which will convince others of your opinion.}
+
+TODO:
 
 
 \section*{Questions for the Authors}
 
-\textsl{Finally, imagine you're attending a talk about this paper given by one of the authors. Give at least 2 questions that you would like to ask, specific to the paper and the research it reports.}
-%% Type your text below
+\textsl{Finally, imagine you're attending a talk about this paper given by one
+of the authors. Give at least 2 questions that you would like to ask, specific
+to the paper and the research it reports.}
 
 If taking a clean-slate approach to this project again, what would you change
 based on what you learnt while making it?
