@@ -19,14 +19,14 @@ i.e.,~what it adds over the state of the art. Paraphrase and extract the
 essentials rather than simply copying chunks of text. Be objective; later
 sections allow for your own opinion.}
 
-The paper presents the idea of Unikernels, single-purpose applications that use
+The paper presents the idea of unikernels, single-purpose applications that use
 a \textit{library operating system} to be compiled down into standalone
-kernels. An OCaml implementation of this idea called Mirage is provided and
-analysed as well. This improves over the state of the art in taking advantage
-of the abstractions hypervisors provide to avoid the hardware compatibility
-issues that previously library operating systems have fallen victim to. The
-lightweight nature of Mirage also means that it is a lot less heivyweight than
-the traditional operating systems that are used for this purpose.
+kernels. Additionally, an OCaml implementation of this idea called MirageOS is
+provided and analysed. This improves over the state of the art in taking
+advantage of the abstractions hypervisors provide to avoid the hardware
+compatibility issues that previous library operating systems have fallen
+victim to. The lightweight nature of MirageOS also means that it is a lot less
+heavyweight than traditional operating systems.
 
 \section*{Pros and Cons}
 
@@ -47,7 +47,7 @@ Pros:
     \item The paper presents a deep exploration of a novel idea that if
     successful, needs initial research like this to investigate its usefulness.
 
-    \item Concrete example of benefits given in DNS server.
+    %\item Concrete example of benefits given in DNS server.
 
 \end{itemize}
 
@@ -55,12 +55,12 @@ Cons:
 
 \begin{itemize}
 
-    \item XeN is falling out of favour (TODO: reference).
+    % \item XeN is falling out of favour (TODO: reference).
 
     %    https://www.theregister.co.uk/2017/11/07/aws_writes_new_kvm_based_hypervisor_to_make_its_cloud_go_faster/
 
 
-    \item The world has moved on from VMs to containers
+    % \item The world has moved on from VMs to containers
 
     \item There is so much existing infrastructure which depends on the deep
     feature-sets Operating Systems provide, one of the reasons this project is
@@ -100,6 +100,8 @@ Cons:
     \item a lot of infrastructure needs to be rebuilt in Mirage, but the real
     world will keep moving forward.
 
+    \item LoC Count
+
 \end{itemize}
 
 
@@ -109,27 +111,36 @@ Cons:
 the problem being solved? Why is it important? If there is prior art, how was
 it insufficient? If the problem had not previously been solved, why not?}
 
+
+\subsection*{Problem motivation}
+
 The way internet services have been used and deployed has evolved and developed
 significantly over the past few years, mainly with the growing use of
 hypervisor and many heavyweight Virtual Machines. However, spawning complete
 instances operating systems (such as GNU/Linux, or Windows) which then execute
 a single task (eg. a web server, or a database) could be considered wasteful.
 
+
+\subsection*{Importance of problem}
+
 The problem is important because of the scale at which these systems operate,
-with estimates that Amazon's EC2 is made up almost 500,000 servers
-\cite{EC2Amount}. Any kind of resource savings, in computation, power or
-memory, however minor for individual instances, can have major consequences
-at scale.
+with estimates that Amazon's EC2 is made up of almost 500,000 servers
+\cite{EC2Amount}. Any kind of resource savings in computation, power or memory
+(however minor for individual instances), can have major consequences at scale.
+
+\subsection*{Prior art}
 
 % TODO: PRIOR art
 
-The thing about the problem in question, of resources being question, is a
-problem where incremental improvements could always be possible and beneficial.
-Due to the rapidly advancing nature of the systems in question, optimisations
-will be possible for the foreseeable future. There is also the question of
-tradeoffs, where the number of variables in play mean that some solutions will
-always have some advantages compared to others based on the tradeoffs they
-make.
+\subsection*{Why the problem hasn't been previously solved}
+
+The problem is one where incremental improvements can always be possible and
+beneficial. Furthermore, due to the rapidly advancing nature of the systems in
+question, optimisations will be possible for the foreseeable future. There is
+also the question of tradeoffs, where the number of variables in play mean that
+some solutions will always have some advantages compared to others based on the
+decisions they make. This paper explores a single previously unexplored
+avenue.
 
 
 \section*{The Solution/Approach}
@@ -140,16 +151,18 @@ details, again using the paper as the source but again, not just copying text.
 Instead, focus on paraphrasing/synopsising, and extracting the essential
 details.} %% Type your text below
 
-The main thing done to address the issues set out above is the introduction of
-an idea known as the unikernel. This is a library operating system that can be
-used to develop applications, which then get compiled down to a kernel that can
-run on a hypervisor. This is innovative because previous attempts at developing
-library operating systems have had limited success due to the difficulty of
-supporting a wide range of hardware, which hypervisors can abstract away. As
-the example unikernel in the paper, \textit{MirageOS}, was written in the
-functional programming language OCaml, backwards compatibility with existing
-systems is sacrificed in exchange for a lot of potential security benefits due
-to the type safety of such a language.
+The main thing done to address the issues set out above is the introduction and
+development of an idea known as the unikernel. This is a library operating
+system that can be used to develop applications, which then get compiled down
+to a kernel that can run on a hypervisor. This is innovative because previous
+attempts at developing library operating systems have had limited success due
+to the difficulty of supporting a wide range of hardware, which hypervisors can
+abstract away. As the example unikernel in the paper, \textit{MirageOS}, was
+written in the functional programming language OCaml, backwards compatibility
+with existing systems is sacrificed in exchange for a lot of potential security
+benefits due to the type safety of such a language.
+
+%TODO: Expand on this with more details
 
 \section*{Evaluation}
 
@@ -161,7 +174,7 @@ reproduction of the evaluation section(s). In rare cases, systems papers may
 not have any evaluation, in which case write `N/A' below.}
 
 The paper performs an evaluation in two forms - through benchmarks and LoC
-(Line of Code) counts. There are a few different types of benchmarks, the first
+(line of code) counts. There are a few different types of benchmarks; the first
 being \textit{microbenchmarks}, by examining the performance of specific
 features of MirageOS and comparing that with the performance of those features
 in conventional operating systems. Elements such as boot-time, threading,
@@ -173,9 +186,12 @@ of applications - with Linux versions coming in at 100s of MB compared to the
 100s of KBs for MirageOS applications. Other gains include memory size and boot
 time.
 
+%TODO: what questions does their evaluation sets out to asnwers? How does
+% MirageOS compare to conventional operating systems?
+
 The weakest part of the evaluation in my opinion is the section on code size,
 despite attempts to normalize the results, the results themselves aren't really
-insightful or say anything useful about the project.
+insightful.
 
 \section*{Your Opinion}
 
@@ -185,23 +201,22 @@ important? The approach a good or bad idea? Why? Which specific things annoyed
 you, or you thought were cool, or cool-but-flawed? Justify your opinions! Make
 an argument which will convince others of your opinion.}
 
-Overall I think the work reported by the paper is extremely cool. Although
-before can be used at a large scale, a lot of work needs to be done - and due
-to the sheer amount of existing infrastructure I think something like this can
-live alongside current VMs and be used for specialised purposes. Checking the
-web page \cite{MirageOSWeb}, development on the project seems to be active which
-is encouraging.
+Overall, I think the work reported by the paper is extremely cool. Although
+before it can be used at a large scale, a lot of work needs to be done. Due to
+the sheer amount of existing infrastructure I think something like this should
+initially live alongside current VMs and be used for specialised purposes.
+Having checked the project web page \cite{MirageOSWeb}, development on the
+project seems to be active which is encouraging.
 
 The paper itself is extremely thorough and the arguments presented are
-convincing. The potential drawbacks and pitfalls of the project are noted and
-explored which is good as well. The main issue I have with the paper is the
-evaluation section. Some of the benchmarks seem arbitrary (such as waking and
-sleeping many threads), where even when they might be justified, the actual
-reasons for the choices of benchmarks are not given. Not much justification is
-given as to why line-of-code count is an important metric to evaluate. Finally,
-there are random asides such as a mention that MirageOS could be compiled to
-nodejs, without stating why that would be beneficial.
-
+convincing. Additionally, The potential drawbacks and pitfalls of the project
+are noted and explored. The main issue I have with the paper is the evaluation
+section. Some of the benchmarks seem arbitrary (such as waking and sleeping
+many threads), where even when they might be justified, the actual reasons for
+the choices of benchmarks are not given. Not much justification is given as to
+why line-of-code count is an important metric to evaluate. Finally, there are
+random asides such as a mention that MirageOS could be compiled to nodejs,
+without stating why that would be beneficial.
 
 \section*{Questions for the Authors}
 
@@ -209,13 +224,11 @@ nodejs, without stating why that would be beneficial.
 of the authors. Give at least 2 questions that you would like to ask, specific
 to the paper and the research it reports.}
 
-If taking a clean-slate approach to this project, or the idea of unikernels
-again, what would you change based on what you learnt while making it?
+If taking a clean-slate approach to this project, or the idea of unikernels,
+what would you change based on what you learnt?
 
 What kind of software/projects can you think of where you would recommend
-people use MirageOS over other options considering the current state of
-MirageOS.
-
+people use MirageOS over other options considering its current state?
 
 \bibliographystyle{unsrt}
 
