@@ -19,8 +19,14 @@ i.e.,~what it adds over the state of the art. Paraphrase and extract the
 essentials rather than simply copying chunks of text. Be objective; later
 sections allow for your own opinion.}
 
-TODO
-
+The paper presents the idea of Unikernels, single-purpose applications that use
+a \textit{library operating system} to be compiled down into standalone
+kernels. An OCaml implementation of this idea called Mirage is provided and
+analysed as well. This improves over the state of the art in taking advantage
+of the abstractions hypervisors provide to avoid the hardware compatibility
+issues that previously library operating systems have fallen victim to. The
+lightweight nature of Mirage also means that it is a lot less heivyweight than
+the traditional operating systems that are used for this purpose.
 
 \section*{Pros and Cons}
 
@@ -31,7 +37,17 @@ Pros:
 
 \begin{itemize}
 
-    \item XeN is
+    \item The idea of using a type-safe language at a systems-level could
+    provide a lot of potential benefits in the long term, despite the short
+    term costs.
+
+    \item The paper is extremely comprehensive, considering many of the pros
+    and cons of the ideas and implementation presented.
+
+    \item The paper presents a deep exploration of a novel idea that if
+    successful, needs initial research like this to investigate its usefulness.
+
+    \item Concrete example of benefits given in DNS server.
 
 \end{itemize}
 
@@ -46,9 +62,43 @@ Cons:
 
     \item The world has moved on from VMs to containers
 
-    \item KVM is lightweight? TODO: check KVM support for this!
+    \item There is so much existing infrastructure which depends on the deep
+    feature-sets Operating Systems provide, one of the reasons this project is
+    so lightweight is because it is lacking a lot of those features.
 
-    \item OCaml, despite its features, isn't a pragmatic language choice
+    \item OCaml, despite its features, isn't a pragmatic language choice as it
+    is relatively esoteric and not widely understood. (This is acknowledged in
+    the paper).
+
+    \item 'minor' setbacks in the performance graphs mean that the performance
+    impact at scale is relatively huge.
+
+    \item benchmarks seem arbitrary, Figure 7a benchmarks thread construction
+    time, showing the time to construct millions of threads in parallel where
+    each thread sleeps for between 0.5–1.5 seconds and then terminates. (When is that useful?)
+
+    \item The sytem isn't backwards compatible. (acknowledged in the paper)
+
+    \item In the ping test, 4-10\% increase in latency compared to Linux is
+    considered \textit{small}.
+
+    \item So many, many edge-cases that would need to be considered.
+    Redevlopment cost of linux kernel estimated at 744GBP. %https://en.wikipedia.org/wiki/Linux_kernel#Estimated_cost_to_redevelop
+
+    \item benchmarks are arbitrary
+
+    \item no nice overall overview of the evaluation (contents or conclusion)
+
+    \item Line of code comparisons are arbitrary.
+
+    \item mentions neat benefits of being compiled to nodejs
+
+    \item performance impact downplayed
+
+    \item parallelisation depends on multiple VMs
+
+    \item a lot of infrastructure needs to be rebuilt in Mirage, but the real
+    world will keep moving forward.
 
 \end{itemize}
 
@@ -71,7 +121,7 @@ with estimates that Amazon's EC2 is made up almost 500,000 servers
 memory, however minor for individual instances, can have major consequences
 at scale.
 
-TODO: PRIOR art
+% TODO: PRIOR art
 
 The thing about the problem in question, of resources being question, is a
 problem where incremental improvements could always be possible and beneficial.
@@ -90,8 +140,16 @@ details, again using the paper as the source but again, not just copying text.
 Instead, focus on paraphrasing/synopsising, and extracting the essential
 details.} %% Type your text below
 
-TODO:
-
+The main thing done to address the issues set out above is the introduction of
+an idea known as the unikernel. This is a library operating system that can be
+used to develop applications, which then get compiled down to a kernel that can
+run on a hypervisor. This is innovative because previous attempts at developing
+library operating systems have had limited success due to the difficulty of
+supporting a wide range of hardware, which hypervisors can abstract away. As
+the example unikernel in the paper, \textit{MirageOS}, was written in the
+functional programming language OCaml, backwards compatibility with existing
+systems is sacrificed in exchange for a lot of potential security benefits due
+to the type safety of such a language.
 
 \section*{Evaluation}
 
@@ -102,8 +160,22 @@ and weaknesses of the evaluation itself? Give highlights, not a point by point
 reproduction of the evaluation section(s). In rare cases, systems papers may
 not have any evaluation, in which case write `N/A' below.}
 
-TODO:
+The paper performs an evaluation in two forms - through benchmarks and LoC
+(Line of Code) counts. There are a few different types of benchmarks, the first
+being \textit{microbenchmarks}, by examining the performance of specific
+features of MirageOS and comparing that with the performance of those features
+in conventional operating systems. Elements such as boot-time, threading,
+networking and storage are analysed for the microbenchmarks. Various examples
+of potential real-world applications are then evaluated such as a DNS Server,
+an OpenFlow controller and a dynamic web server that implements a
+\textit{Twitter-like} service. Most predictable but notable result is the size
+of applications - with Linux versions coming in at 100s of MB compared to the
+100s of KBs for MirageOS applications. Other gains include memory size and boot
+time.
 
+The weakest part of the evaluation in my opinion is the section on code size,
+despite attempts to normalize the results, the results themselves aren't really
+insightful or say anything useful about the project.
 
 \section*{Your Opinion}
 
@@ -113,7 +185,22 @@ important? The approach a good or bad idea? Why? Which specific things annoyed
 you, or you thought were cool, or cool-but-flawed? Justify your opinions! Make
 an argument which will convince others of your opinion.}
 
-TODO:
+Overall I think the work reported by the paper is extremely cool. Although
+before can be used at a large scale, a lot of work needs to be done - and due
+to the sheer amount of existing infrastructure I think something like this can
+live alongside current VMs and be used for specialised purposes. Checking the
+web page \cite{MirageOSWeb}, development on the project seems to be active which
+is encouraging.
+
+The paper itself is extremely thorough and the arguments presented are
+convincing. The potential drawbacks and pitfalls of the project are noted and
+explored which is good as well. The main issue I have with the paper is the
+evaluation section. Some of the benchmarks seem arbitrary (such as waking and
+sleeping many threads), where even when they might be justified, the actual
+reasons for the choices of benchmarks are not given. Not much justification is
+given as to why line-of-code count is an important metric to evaluate. Finally,
+there are random asides such as a mention that MirageOS could be compiled to
+nodejs, without stating why that would be beneficial.
 
 
 \section*{Questions for the Authors}
@@ -122,8 +209,13 @@ TODO:
 of the authors. Give at least 2 questions that you would like to ask, specific
 to the paper and the research it reports.}
 
-If taking a clean-slate approach to this project again, what would you change
-based on what you learnt while making it?
+If taking a clean-slate approach to this project, or the idea of unikernels
+again, what would you change based on what you learnt while making it?
+
+What kind of software/projects can you think of where you would recommend
+people use MirageOS over other options considering the current state of
+MirageOS.
+
 
 \bibliographystyle{unsrt}
 
