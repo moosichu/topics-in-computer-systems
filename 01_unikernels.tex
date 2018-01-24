@@ -70,37 +70,37 @@ Cons:
     is relatively esoteric and not widely understood. (This is acknowledged in
     the paper).
 
-    \item 'minor' setbacks in the performance graphs mean that the performance
-    impact at scale is relatively huge.
+    % \item 'minor' setbacks in the performance graphs mean that the performance
+    % impact at scale is relatively huge.
 
-    \item benchmarks seem arbitrary, Figure 7a benchmarks thread construction
-    time, showing the time to construct millions of threads in parallel where
-    each thread sleeps for between 0.5–1.5 seconds and then terminates. (When is that useful?)
+    \item Some of the evaluation section seems arbitrary, for example showing
+    the time to construct millions of threads in parallel where each thread
+    sleeps for between 0.5–1.5 seconds and then terminates.
 
-    \item The sytem isn't backwards compatible. (acknowledged in the paper)
+    % \item The sytem isn't backwards compatible. (acknowledged in the paper)
 
-    \item In the ping test, 4-10\% increase in latency compared to Linux is
-    considered \textit{small}.
+    % \item In the ping test, 4-10\% increase in latency compared to Linux is
+    % considered \textit{small}.
 
-    \item So many, many edge-cases that would need to be considered.
-    Redevlopment cost of linux kernel estimated at 744GBP. %https://en.wikipedia.org/wiki/Linux_kernel#Estimated_cost_to_redevelop
+    % \item So many, many edge-cases that would need to be considered.
+    % Redevlopment cost of linux kernel estimated at 744GBP. %https://en.wikipedia.org/wiki/Linux_kernel#Estimated_cost_to_redevelop
 
-    \item benchmarks are arbitrary
+    % \item benchmarks are arbitrary
 
-    \item no nice overall overview of the evaluation (contents or conclusion)
+    % \item no nice overall overview of the evaluation (contents or conclusion)
 
-    \item Line of code comparisons are arbitrary.
+    % \item Line of code comparisons are arbitrary.
 
-    \item mentions neat benefits of being compiled to nodejs
+    % \item mentions neat benefits of being compiled to nodejs
 
-    \item performance impact downplayed
+    % \item performance impact downplayed
 
-    \item parallelisation depends on multiple VMs
+    % \item parallelisation depends on multiple VMs
 
-    \item a lot of infrastructure needs to be rebuilt in Mirage, but the real
-    world will keep moving forward.
+    % \item a lot of infrastructure needs to be rebuilt in Mirage, but the real
+    % world will keep moving forward.
 
-    \item LoC Count
+    % \item LoC Count
 
 \end{itemize}
 
@@ -127,10 +127,6 @@ The problem is important because of the scale at which these systems operate,
 with estimates that Amazon's EC2 is made up of almost 500,000 servers
 \cite{EC2Amount}. Any kind of resource savings in computation, power or memory
 (however minor for individual instances), can have major consequences at scale.
-
-\subsection*{Prior art}
-
-% TODO: PRIOR art
 
 \subsection*{Why the problem hasn't been previously solved}
 
@@ -186,8 +182,8 @@ of applications - with Linux versions coming in at 100s of MB compared to the
 100s of KBs for MirageOS applications. Other gains include memory size and boot
 time.
 
-%TODO: what questions does their evaluation sets out to asnwers? How does
-% MirageOS compare to conventional operating systems?
+The question the evaluation essentially aims to set out to answer is: How does
+MirageOS compare to conventional operating systems?
 
 The weakest part of the evaluation in my opinion is the section on code size,
 despite attempts to normalize the results, the results themselves aren't really
