@@ -50,7 +50,8 @@ Pros:
     to provide an overview and explanation of them instead of advocating for or
     against them.
 
-    \item Pro 3
+    \item The paper is understandable and self-contained, not much reference
+    chasing is required.
 
 \end{itemize}
 
@@ -66,24 +67,25 @@ Cons:
     example of this is \textit{the Grid}, which is repeatedly mentioned in the
     paper and something I have been unable to source.
 
-    \item The paper is relatively unfocused due to its broad scope, (TODO: give
-    justification).
+    % \item The paper is relatively unfocused due to its broad scope, (TODO: give
+    % justification).
 
-    \item Linux-VServer hasn't really caught on, as its changes haven't been
-    integrated into mainline
-    Linux.
+    % \item Linux-VServer hasn't really caught on, as its changes haven't been
+    % integrated into mainline
+    % Linux.
 
-    \item In the evaluation, a statement is made describing the setup, but
-    apart from the open source database tests thingy, not justification for the
-    descisions are really given.
+    % \item In the evaluation, a statement is made describing the setup, but
+    % apart from the open source database tests thingy, not justification for the
+    % descisions are really given.
 
-    \item There is an odd part of the evaluation (CPU Fair Share) where one of the
-    VMs is given CPU reservation, a feature with Xen lacks. So it's kind of pointless.
+    \item There is an odd part of the evaluation (CPU Fair Share) where one of
+    the VMs is given CPU reservation, a feature with Xen lacks. So it's kind of
+    pointless.
 
-    \item Evaluation only compares Xen, not the state of the art.
+    % \item Evaluation only compares Xen, not the state of the art.
 
-    \item The interesting case of containers in a virtualised enivornment isn't
-    tested.
+    % \item The interesting case of containers in a virtualised enivornment isn't
+    % tested.
 
 \end{itemize}
 
@@ -152,7 +154,17 @@ and weaknesses of the evaluation itself? Give highlights, not a point by point
 reproduction of the evaluation section(s). In rare cases, systems papers may
 not have any evaluation, in which case write `N/A' below.}
 
-TODO
+The evaluation mostly consists of quantative comparisons of Linux-VServer and
+the Xen hypervisor using various benchmarks. Three styles of benchmarks are
+presented: micro, system and macro. The goal of the evaluation is to demonstrate
+the advantages container based operating systems have over hypervisors.
+
+For the most part, the evaluation succeeds in showing this for many aspects of
+container based operating systems. However, the biggest weakness of the
+evaluation is how focused it is on Linux-VServer. Despite the paper mentioning
+a variety of hypervisors and container-based operating systems, including TODO
+only Linux-VServer and Xen hypervisor are compared, making the evaluations
+themselves uncomprehensive.
 
 \section*{Your Opinion}
 
@@ -162,7 +174,38 @@ important? The approach a good or bad idea? Why? Which specific things annoyed
 you, or you thought were cool, or cool-but-flawed? Justify your opinions! Make
 an argument which will convince others of your opinion.}
 
-TODO
+Considering the context in which the paper was published, I think the paper
+provides value in providing an overview of container-based operating system to
+those who are unfamiliar with them. It presents convincing arguments for and
+against their usage versus hypervisors, with a focus on isolation and
+efficiency. The main aspects of the paper which in my opinion fall short, are
+the evaluations themselves, as described above. One of the things the paper
+could have done would have been exploring and evaluating the case of containers
+inside of a virtual machine - containers and virtual machines do have some
+orthogonal benefits which complement each other quite well, so observing how a
+multiple containers scale on a virtual machine running on a hypervisor could
+have formed part of an interesting evaluation.
+
+Finally, in hindsight the paper's focus on Linux-VServer is curious - as
+despite the recent explosion in container-based systems such as Docker and LXC,
+Linux-VServer doesn't seem to have enjoyed as much popularity. (TODO:
+reference)
+
+%     \item Linux-VServer hasn't really caught on, as its changes haven't been
+%     integrated into mainline
+%     Linux.
+
+%     \item In the evaluation, a statement is made describing the setup, but
+%     apart from the open source database tests thingy, not justification for the
+%     descisions are really given.
+
+%     \item There is an odd part of the evaluation (CPU Fair Share) where one of the
+%     VMs is given CPU reservation, a feature with Xen lacks. So it's kind of pointless.
+
+%     \item Evaluation only compares Xen, not the state of the art.
+
+%     \item The interesting case of containers in a virtualised enivornment isn't
+%     tested.
 
 \section*{Questions for the Authors}
 
