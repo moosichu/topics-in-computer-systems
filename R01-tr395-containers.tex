@@ -41,9 +41,14 @@ Pros:
 
 \begin{itemize}
 
-    \item Pro 1
+    \item Comprehensive analyses of existing systems are valuable research in
+    and of themselves - providing that for container-based operating systems
+    gives this paper a lot of value.
 
-    \item Pro 2
+    \item The paper pragmatically weighs up the pros and cons of
+    container-based operating systems versus hypervisors, the goal is clearly
+    to provide an overview and explanation of them instead of advocating for or
+    against them.
 
     \item Pro 3
 
@@ -53,11 +58,32 @@ Cons:
 
 \begin{itemize}
 
-    \item Con 1
+    \item The title is slightly misleading, although parts of the paper are
+    about container-based operating systems in general - the focus is very much
+    on one specific implementation: Linux-VServer.
 
-    \item Con 2
+    \item Some terms are introduced and never explained or referenced. A good
+    example of this is \textit{the Grid}, which is repeatedly mentioned in the
+    paper and something I have been unable to source.
 
-    \item Con 3
+    \item The paper is relatively unfocused due to its broad scope, (TODO: give
+    justification).
+
+    \item Linux-VServer hasn't really caught on, as its changes haven't been
+    integrated into mainline
+    Linux.
+
+    \item In the evaluation, a statement is made describing the setup, but
+    apart from the open source database tests thingy, not justification for the
+    descisions are really given.
+
+    \item There is an odd part of the evaluation (CPU Fair Share) where one of the
+    VMs is given CPU reservation, a feature with Xen lacks. So it's kind of pointless.
+
+    \item Evaluation only compares Xen, not the state of the art.
+
+    \item The interesting case of containers in a virtualised enivornment isn't
+    tested.
 
 \end{itemize}
 
@@ -67,7 +93,28 @@ Cons:
 the problem being solved? Why is it important? If there is prior art, how was
 it insufficient? If the problem had not previously been solved, why not?}
 
+The motivation for the container-based operating systems which the paper
+describes is how heavyweight virtual machines running on a hypervisor can be.
+Although there are benefits to this, the paper argues that in some contexts
+having many kernel instances (especially of identical kernels) is wasteful, and
+a container based OS is a way to have a kernel shared by many different
+pseudo-VMs. Arguments are also made that other overheads related to hypervisors
+can be reduced or eliminated by using containers as well.
 
+The work is important because of the explosion of VMs and hypervisors in data
+centers \cite{VirtualizationGrowth}, and whilst the dramatic growth of them has
+been driven by many benefits they provide, finding ways to reap similar
+benefits whilst reducing some of the costs could be extremely valuable.
+
+The prior art is what the paper describes, the systems being developed to solve
+the problem the paper analyses are in constant development - incremental and
+major gains are constantly being made in what is both an incredibly active area
+of research and engineering. There are many different solutions to the
+problems, each involving different trade-offs, a contributing factor to why
+solving the problems described is so hard is because the nature of the problem
+is constantly changing. Hardware, software, services, scale, what is expected, use cases,
+alternatives, and more are constantly under flux, of which the systems being
+described a singular apart.
 
 \section*{The Solution/Approach}
 
@@ -77,6 +124,24 @@ details, again using the paper as the source but again, not just copying text.
 Instead, focus on paraphrasing/synopsising, and extracting the essential
 details.}
 
+The paper describes the main benefits of virtualization being those of
+isolation. For example, many virtual machines running over a single hypervisor
+are \textit{isolated} from each other in various ways. Whilst there are other
+potential benefits to virtualization, which container-based operating systems
+may not be able to provide, the paper focuses on how it is possible to provide
+isolation between containers running on a singular kernel with the caveat being
+that some of the stronger isolation guarantees hypervisors provide are exchanged
+for higher efficiency.
+
+The three types of isolation described are those of \textit{fault},
+\textit{resource} and \textit{security} isolation. Linux-VServer, which the
+paper describes, provides these through modifications to the Linux kernel which
+allow for \textit{Fair Share} scheduling of various resources such as the CPU
+and I/O. Interesting techniques are also used such as resetting the Virtual
+Machine that uses the most memory when the swap has almost filled. In other
+cases such as networking, limitations are introduced such as the inability for
+VMs to change their own route table entries or IP tables rules - in exchange
+for native Linux networking performance.
 
 \section*{Evaluation}
 
@@ -87,6 +152,7 @@ and weaknesses of the evaluation itself? Give highlights, not a point by point
 reproduction of the evaluation section(s). In rare cases, systems papers may
 not have any evaluation, in which case write `N/A' below.}
 
+TODO
 
 \section*{Your Opinion}
 
@@ -95,14 +161,20 @@ the paper and the work it reports! Is the motivation convincing? The problem
 important? The approach a good or bad idea? Why? Which specific things annoyed
 you, or you thought were cool, or cool-but-flawed? Justify your opinions! Make
 an argument which will convince others of your opinion.}
-below
 
+TODO
 
 \section*{Questions for the Authors}
 
 \textsl{Finally, imagine you're attending a talk about this paper given by one
 of the authors. Give at least 2 questions that you would like to ask, specific
 to the paper and the research it reports.}
+
+What do you think about the current state of containers and the different
+options available?
+
+What are the biggest challenges facing containers, and do you see any
+convergence happening with virtualization technologies in the future?
 
 \bibliographystyle{unsrt}
 
