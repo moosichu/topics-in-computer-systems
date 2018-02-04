@@ -49,9 +49,9 @@ Pros:
     at a large scale, the source-code to the ZooKeeper itself has been
     published and open to usage and investigation by others.
 
-    \item Pro 2
+    \item Pro 2 TODO
 
-    \item Pro 3
+    \item Pro 3 TODO
 
 \end{itemize}
 
@@ -69,7 +69,7 @@ Cons:
     in the paper would have been good as so many variables could differ between
     different papers.
 
-    \item Con 3
+    \item Con 3 TODO:
 
 \end{itemize}
 
@@ -81,7 +81,13 @@ it insufficient? If the problem had not previously been solved, why not?}
 
 Coordinating distributed systems is a hard problem to solve, but one that is
 constantly increasing importance due to the growth of internet services which
-may even be distributed across the globe. The needs of different systems.
+may even be distributed across the globe. The needs of different systems can
+vary on case by case basis, and trade-offs always have to be made between using
+off-the-shelf systems, stitching pre-built components together and building
+custom solutions from scratch. Systems for the coordination of distributed
+applications did exist, but due to their concerns and priorities the
+performance ZooKeeper could use weak consistency guarantees in order to achieve
+high performance.
 
 \section*{The Solution/Approach}
 
@@ -90,6 +96,8 @@ set out above? How is it unique and/or innovative (if, indeed, it is)? Give
 details, again using the paper as the source but again, not just copying text.
 Instead, focus on paraphrasing/synopsising, and extracting the essential
 details.}
+
+TODO:
 
 
 \section*{Evaluation}
@@ -101,6 +109,21 @@ and weaknesses of the evaluation itself? Give highlights, not a point by point
 reproduction of the evaluation section(s). In rare cases, systems papers may
 not have any evaluation, in which case write `N/A' below.}
 
+The authors evaluated the work by measuring the latency and throughput of
+ZooKeeper in various configurations across a cluster of 50 servers - the number
+of clients was always fixed at 35 whilst the up to 15 of the other servers were
+used to provide the ZooKeeper service. The evaluation aims to answer the
+question: \textit{How well does ZooKeeper perform}?
+
+In my opinion the evaluation is the weakest part of the paper as it doesn't
+really answer any questions about the system, although there are plenty of hard
+numbers presented on the system, in isolation they tell nothing about how
+ZooKeeper compares with its contemporaries. Although mention is made of how
+ZooKeeper compares with a distributed-lock service called Chubby \cite{Chubby},
+having read the paper referred to, the evaluation sections are non-comparable
+in many ways, for example different hardware is used in both papers!
+
+TODO: double-check above
 
 \section*{Your Opinion}
 
@@ -109,14 +132,28 @@ the paper and the work it reports! Is the motivation convincing? The problem
 important? The approach a good or bad idea? Why? Which specific things annoyed
 you, or you thought were cool, or cool-but-flawed? Justify your opinions! Make
 an argument which will convince others of your opinion.}
-below
 
+ In my opinion, the paper does a lot to convince the reader that ZooKeeper is
+ an effective system through various use-cases and through the simple fact that
+ it has been used with success at Yahoo!. Furthermore, ZooKeeper is now a
+ top-level Apache Foundation project meaning it has seen further success beyond
+ the life of the paper \cite{ApacheZooKeeper}.
+
+ However, despite this, the paper really stumbles in its evaluation of
+ ZooKeeper. TODO:
 
 \section*{Questions for the Authors}
 
 \textsl{Finally, imagine you're attending a talk about this paper given by one
 of the authors. Give at least 2 questions that you would like to ask, specific
 to the paper and the research it reports.}
+
+What drove the decision to make ZooKeeper an open source Apache Foundation
+project, has the project succeeded where you have wanted it to do so?
+
+Do you think that the growth of data-centers has changed the nature the
+distributed applications, or do you think the tools used need to rapidly change
+and evolve to tackle an ever-developing problem?
 
 \bibliographystyle{unsrt}
 
