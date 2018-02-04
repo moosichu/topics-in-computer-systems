@@ -24,6 +24,18 @@ i.e.,~what it adds over the state of the art. Paraphrase and extract the
 essentials rather than simply copying chunks of text. Be objective; later
 sections allow for your own opinion.}
 
+The largest contribution of the paper is the development of an alternative
+consensus algorithm to Paxos \cite{Paxos}. However, the primary goal of the
+algorithm isn't to improve over Paxos from any kind of performance perspective,
+but to provide and equivalent alternative that is easier for \textit{humans} to
+understand. The authors argue that it is difficult for effective systems by
+built by individuals who have little understanding of the components involved,
+with Paxos being a common component of which people have little understanding.
+Raft, is presented as the alternative, with the paper providing an evaluation
+which aims to demonstrate its understandability. Although other, similar
+alternative consensus algorithms exist, other contributions are made in
+leadership, leader elections and membership changes. TODO, check word is
+spelled correctly)
 
 \section*{Pros and Cons}
 
@@ -34,7 +46,9 @@ Pros:
 
 \begin{itemize}
 
-    \item Pro 1
+    \item Having a focus on understandability is commendable, I have never come
+    across systems papers with that before and I believe it is an important
+    component of systems worth considering more often.
 
     \item Pro 2
 
@@ -46,7 +60,10 @@ Cons:
 
 \begin{itemize}
 
-    \item Con 1
+    \item Although acknowledging the existence of other non-Paxos consensus
+    algorithms such as those found in ZooKeeper \cite{ZooKeeper} and VR, their
+    understandability isn't evaluated - only Raft and Paxos are directly
+    compared.
 
     \item Con 2
 
@@ -60,7 +77,18 @@ Cons:
 the problem being solved? Why is it important? If there is prior art, how was
 it insufficient? If the problem had not previously been solved, why not?}
 
+The main argument made is that Paxos is a hard protocol to understand - a
+casual Google search \cite{PaxosSearch} on my behalf revealed that 7 out of the
+top 10 results for \textit{Paxos Protocol} were devoted to
+\textit{understanding Paxos} or \textit{Paxos made simple}, indicating that the
+understandability of Paxos has been an issue.
 
+This is arguably important because despite how effective a system may be in
+theory, if those implementing the system have an incomplete understanding it,
+the probability of that system exhibiting its desirable qualities could
+arguably decrease. The prior art itself has been so focused on explaining and
+improving Paxos, that the main alternative consensus algorithms are part of
+specific systems such as ZooKeeper or VR.
 
 \section*{The Solution/Approach}
 
