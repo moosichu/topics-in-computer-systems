@@ -29,7 +29,8 @@ can be used to coordinate the processes of distributed applications. The main
 difference to existing services, which either focus on coordinating specific
 distributed applications or provide locking primitives which can be used to
 create coordination services, is that ZooKeeper exposes an API that allows for
-the development of such primitives using a wait-free model.
+the development of such primitives using a wait-free model in addition to FIFO
+client ordering of all operations and linearisable writes.
 
 Finally, the paper demonstrates how ZooKeepers \textit{coordination kernel} can
 be used to build higher level primitives in addition to providing real-world
@@ -49,9 +50,11 @@ Pros:
     at a large scale, the source-code to the ZooKeeper itself has been
     published and open to usage and investigation by others.
 
-    \item Pro 2 TODO
+    \item The file-system like API is intuitive.
 
-    \item Pro 3 TODO
+    \item Giving example usage code of the system presented helps with
+    understanding the paper and demonstrating how it can be used to build
+    higher level primitives.
 
 \end{itemize}
 
@@ -66,10 +69,13 @@ Cons:
 
     \item Although the evaluation mentions how ZooKeeper compares to the
     published results of other, similar systems, having the direct comparisons
-    in the paper would have been good as so many variables could differ between
-    different papers.
+    in the paper would have been good as so many variables could differ in
+    performance evaluations between different papers.
 
-    \item Con 3 TODO:
+    \item The word \textit{client} is introduced as a technical term with a
+    very specific meaning, however the terminology isn't defined until Section
+    2 in the paper. Even with the definition, this term and others seem
+    overloaded and seem to be used outside of the context they are defined for.
 
 \end{itemize}
 
@@ -97,7 +103,19 @@ details, again using the paper as the source but again, not just copying text.
 Instead, focus on paraphrasing/synopsising, and extracting the essential
 details.}
 
-TODO:
+The authors aim to help solve the problem above through the creation of an
+easy-to-use distributed service called ZooKeeper. Although comparable to other
+existing systems such as Chubby \cite{Chubby}, it is innovative in its ability
+to provide high performance for reads by \textit{not} explicitly implementing
+higher-level primitives such as locks. It works by providing applications a
+file-system like structure consisting of \textit{znodes}, and various
+operations that clients can perform on them.
+
+Internally, the ZooKeeper works through the use of multiple servers consisting
+of one leader and multiple followers, which coordinate using an agreement
+protocol. A write-ahead log is used to keep track of all transactions. The
+authors claim that the internal coherency protocol used is similar to Paxos as
+well.
 
 
 \section*{Evaluation}
@@ -116,14 +134,12 @@ used to provide the ZooKeeper service. The evaluation aims to answer the
 question: \textit{How well does ZooKeeper perform}?
 
 In my opinion the evaluation is the weakest part of the paper as it doesn't
-really answer any questions about the system, although there are plenty of hard
-numbers presented on the system, in isolation they tell nothing about how
-ZooKeeper compares with its contemporaries. Although mention is made of how
-ZooKeeper compares with a distributed-lock service called Chubby \cite{Chubby},
-having read the paper referred to, the evaluation sections are non-comparable
-in many ways, for example different hardware is used in both papers!
-
-TODO: double-check above
+really answer any questions about the system. Although there are plenty of hard
+numbers presented, in isolation they tell nothing about how ZooKeeper compares
+with its contemporaries. Although mention is made of how ZooKeeper compares
+with a distributed-lock service called Chubby \cite{Chubby}, having read the
+paper referred to, the evaluation sections are non-comparable in many ways, for
+example different hardware is used in both papers!
 
 \section*{Your Opinion}
 
@@ -133,14 +149,16 @@ important? The approach a good or bad idea? Why? Which specific things annoyed
 you, or you thought were cool, or cool-but-flawed? Justify your opinions! Make
 an argument which will convince others of your opinion.}
 
- In my opinion, the paper does a lot to convince the reader that ZooKeeper is
- an effective system through various use-cases and through the simple fact that
- it has been used with success at Yahoo!. Furthermore, ZooKeeper is now a
- top-level Apache Foundation project meaning it has seen further success beyond
- the life of the paper \cite{ApacheZooKeeper}.
+In my opinion, the paper does a lot to convince the reader that ZooKeeper is an
+effective system through various use-cases and through the simple fact that it
+has been used with success at Yahoo!. Furthermore, ZooKeeper is now a top-level
+Apache Foundation project meaning it has seen further success beyond the life
+of the paper \cite{ApacheZooKeeper}. I appreciated small features of the paper
+as well, such as physically highlighting which of ZooKeeper's features
+production applications used.
 
- However, despite this, the paper really stumbles in its evaluation of
- ZooKeeper. TODO:
+However, despite this, the paper really stumbles in its evaluation of
+ZooKeeper, as stated in the above section.
 
 \section*{Questions for the Authors}
 
