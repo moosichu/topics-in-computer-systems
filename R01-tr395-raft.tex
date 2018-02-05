@@ -27,9 +27,9 @@ sections allow for your own opinion.}
 The largest contribution of the paper is the development of an alternative
 consensus algorithm to Paxos \cite{Paxos}. However, the primary goal of the
 algorithm is not to improve over Paxos from any kind of performance
-perspective, but to provide and equivalent alternative baseline that is easier
+perspective, but to provide an equivalent alternative baseline that is easier
 for \textit{humans} to understand. The authors argue that it is difficult for
-effective systems by built by individuals who have little understanding of the
+effective systems to be built by individuals who have little understanding of the
 components involved, with Paxos being a common component of which people have
 little understanding. Raft, is presented as the alternative, with the paper
 providing an evaluation which aims to demonstrate its understandability.
@@ -51,12 +51,12 @@ Pros:
 
     \item The paper justifies its approach by taking examples from papers where
     the authors claim to use a protocol based on Paxos but with differences for
-    \textit{real-world} systems \cite{Chubby}, demonstrating that in practise,
+    \textit{real-world} systems \cite{Chubby}, demonstrating that in practise
     Paxos is rarely strictly adhered to.
 
-    \item The paper gives a summary of what it believes the properties of a
-    consensus algorithm should be, giving a good introduction to the subject
-    matter itself.
+    % \item The paper gives a summary of what it believes the properties of a
+    % consensus algorithm should be, giving a good introduction to the subject
+    % matter itself.
 
     \item The paper contains links to both LogCabin \cite{LogCabin}, the
     authors' implementation of the protocol, and to a web-page which gives an
@@ -76,13 +76,14 @@ Cons:
     compared in the user study the paper presents.
 
     \item The description of Raft, as presented in the paper, still has many
-    subtelties due to potential unexpected interactions between components
+    subtleties due to potential unexpected interactions between components
     (despite the steps taken to decompose the protocol). Furthermore, as with
     the original Paxos paper, many implementation decisions are left to the
     reader \cite{RaftRefloated}.
 
     \item Some points are given without explanation. For example it is stated
-    that a candidate will vote for itself without giving \textit{why}.
+    that a candidate will vote for itself without giving reasons \textit{why}
+    this is necessary.
 
 \end{itemize}
 
@@ -92,20 +93,20 @@ Cons:
 the problem being solved? Why is it important? If there is prior art, how was
 it insufficient? If the problem had not previously been solved, why not?}
 
-The main argument made is that Paxos is a hard protocol to understand - a
+The principal argument is that Paxos is a hard protocol to understand - a
 casual Google search \cite{PaxosSearch} on my behalf revealed that 7 out of the
 top 10 results for \textit{Paxos Protocol} were devoted to
 \textit{understanding Paxos} or \textit{Paxos made simple}, indicating that the
 understandability of Paxos has been an issue.
 
 This is arguably important because despite how effective a system may be in
-theory, if those implementing the system have an incomplete understanding it,
-the probability of that system exhibiting its desirable qualities could
+theory, if those implementing the system have an incomplete understanding of
+it, the probability of that system exhibiting its desirable qualities could
 arguably decrease. The prior art itself has been so focused on explaining and
 improving Paxos, that the main alternative consensus algorithms are part of
 specific systems such as ZooKeeper \cite{ZooKeeper} or Viewstamped Replication
 \cite{ViewstampedReplication}. This has resulted in a variety of unproven and
-informal Paxos-based systems being used in many real-world systems.
+informal Paxos-based implementations being used in many real-world systems.
 
 \section*{The Solution/Approach}
 
@@ -115,14 +116,14 @@ details, again using the paper as the source but again, not just copying text.
 Instead, focus on paraphrasing/synopsising, and extracting the essential
 details.}
 
-The paper mainly provides a description of a consensus protocol that was
-created from the ground-up as an alternative to Paxos. It is mainly innovative
-in acknowledging something that happens in practise - Paxos is rarely used in
-lieu of ad-hoc alternatives, and formalising an alternative (Raft) which has
-been shown to be correct. The paper also describes the process used in creating
-Raft and what drove various design decisions. The main goal was to be able to
-decompose the algorithms into various sub-problems that could be understood in
-isolation: such as leadership elections, logging, and membership changes.
+The paper provides a description of a consensus protocol that was created from
+the ground-up as an alternative to Paxos. It is innovative in acknowledging
+something that happens in practise - Paxos is rarely used in lieu of ad-hoc
+alternatives, and formalising an alternative (Raft) which has been shown to be
+correct. The paper also describes the process used in Raft's creation and what
+drove various design decisions. The primary goal was to be able to decompose
+the algorithms into various sub-problems that could be understood in isolation:
+such as leadership elections, logging, and membership changes.
 
 Furthermore, the paper analyses the performance of a concrete implementation of
 Raft \cite{LogCabin} with the aim to demonstrate that the alternative is a
@@ -152,35 +153,34 @@ in proving the type safety of the specification).
 With regards to performance, the main thing profiled is the time to detect and
 replace crashed leaders - the paper simply states that Raft has similar
 performance to other consensus algorithms. Therefore, the claims about
-performance have to be taken at face-value, and what is empirically measured is
-specific to Raft, making it tough to compare the results against other
-protocols.
+performance have to be taken at face-value, and that which is empirically
+measured is specific to Raft, making it tough to compare the results against
+other protocols.
 
 With regards to understandability, a study was performed using 43 participants
-where they were each taught about both Raft and Paxos by watching a video -
-before self-evaluating their understanding of each and completing a quiz.
-Overall, the participants performed better in the quiz on Raft and felt it was
-easier to understand than Paxos.
+where they were each taught about both Raft and Paxos by watching a video prior
+to self-evaluating their understanding of each and completing a quiz. Overall,
+the participants performed better in the quiz on Raft and felt it was easier to
+understand than Paxos.
 
-The paper claims that the experiments favoured Paxos in two ways: some of
-participants reported having some prior experience with Paxos and the Paxos
-video was 14\% longer than the Raft video. However, no evidence is given as to
-why these points favour Paxos over Raft. For example, some evidence shows that
-people with exposure to topics are more likely to have misconceptions about
-them which may negatively affect test scores after being taught material
-\cite{DerekMuller2008}. Furthermore, a compelling case could be made that
-longer videos could be harder to understand than shorter ones.
+The paper claims that the experiments favoured Paxos in two ways: some
+participants reported having prior experience with Paxos and the Paxos video
+was 14\% longer than the Raft video. However, no evidence is given as to why
+these points favour Paxos over Raft. For example, some evidence shows that
+people with prior exposure to topics are more likely to have misconceptions
+about them which may negatively affect test scores after being taught material
+\cite{DerekMuller2008}.
 
-The paper also states that participants may have been biased by knowledge of
-the hypothesis that Raft is easier to understand when performing their
-self-evaluation, maybe steps should have been taken to ensure candidates were
-not aware of the hypothesis being tested.
+% The paper also states that participants may have been biased by knowledge of
+% the hypothesis that Raft is easier to understand when performing their
+% self-evaluation, maybe steps should have been taken to ensure candidates were
+% not aware of the hypothesis being tested.
 
 Finally, a single lecturer is used for for both videos, which arguably doesn't
 eliminate many possible biases - ideally a random sample of lecturers should
-have been used for to teach each topic in their own style. Although there are
-practical issues in doing so, I still feel the paper should have stated that
-having a single lecturer was far from ideal.
+have been used to teach each algorithm in their own style. Although there are
+practical issues in doing so, I feel the paper should have stated that having a
+single lecturer was far from ideal.
 
 
 \section*{Your Opinion}
@@ -193,24 +193,23 @@ an argument which will convince others of your opinion.}
 
 Considering how subjective \textit{understandability} is, there are naturally
 going to be varying opinions from the perspective of the reader on how
-effective Raft is at providing an understandable to the Paxos consensus
-protocol. In my opinion, I found the paper itself, and the description of Raft,
-a very pleasant read and incredibly understandable - so from my perspective I
-feel that the authors succeeded in achieving their aim of making something
-understandable. Furthermore, I also agree with all of the points raised in the
-paper on how important understandability is, especially as real-world uses of
-Paxos can deviate from Paxos significantly \cite{Chubby} \cite{ZooKeeper}.
-Therefore many implementations of Paxos haven't been mathematically proven to
-be safe consensus protocols!
+effective Raft is at providing an understandable alternative to the Paxos
+consensus protocol. In my opinion, I found the paper itself, and the
+description of Raft, a very pleasant read and incredibly understandable - so
+from my perspective I feel that the authors succeeded in achieving their aim of
+making something understandable. Furthermore, I also agree with all of the
+points raised in the paper on the importance of understandability, especially
+as real-world uses of Paxos can deviate from the original proposal
+significantly \cite{Chubby} \cite{ZooKeeper}. Therefore many implementations of
+Paxos haven't been mathematically proven to be safe consensus protocols!
 
 However, in trying to demonstrate how understandable the Raft consensus
-protocol is, I feel the paper falls down in its evaluation and usability study
-for the reasons mentioned above. The brevity of the evaluation section as a
-whole is surprising, considering that three distinct criteria are evaluated.
-Therefore, I definitely feel it is the weakest part of the paper. This opinion
-is further justified by the fact that attempts to recreate some of the results
-presented were proven more difficult than anticipated \cite{RaftRefloated}.
-
+protocol is, the paper falls down in its evaluation and usability study for the
+reasons mentioned above. The brevity of the evaluation section as a whole is
+surprising, considering that three distinct criteria are evaluated. Therefore,
+it is the weakest part of the paper. This opinion is further justified by the
+fact that attempts to recreate some of the results presented were proven more
+difficult than anticipated \cite{RaftRefloated}.
 
 \section*{Questions for the Authors}
 
