@@ -42,11 +42,12 @@ Pros:
     \item The paper gives an in-depth overview of a feat of engineering that has
     been used successfully at Google for over a decade.
 
-    \item Although Borg is proprietary to Google, the description of it could
-    still be relevant to the wider systems community as the spiritual successor
-    of Borg, Kubernetes \cite{Kubernetes}, is open source.
+    \item Although Borg is proprietary to Google, the paper describing it
+    provides a useful insight into \textit{what goes on behind the curtains},
+    that would otherwise be unavailable.
 
-    \item Pro 3
+    \item The lessons learned section help quantify what architects of other
+    systems can takeaway from the experience Google had with Borg.
 
 \end{itemize}
 
@@ -54,11 +55,24 @@ Cons:
 
 \begin{itemize}
 
-    \item Con 1
+    \item Borg is a proprietary system, so although the paper may be
+    informative, it's not describing something that anyone will use unless they
+    work at Google.
 
-    \item Con 2
+    \item The evaluation methodology seems to depend an a familiarity with Borg
+    features such as Fauxmaster, and therefore it is unclear what was simulated
+    and what wasn't.
 
-    \item Con 3
+    \item Applications running on Borg are expected to handle many types of
+    failures themselves, with no features provided to handle things such as
+    storing persistent state.
+
+    \item Latency-sensitive applications seem to get large priorities over
+    batch-classed applications with no drawbacks. The paper glosses over what
+    is done to prevent all application developers from marking their
+    applications as latency-sensitive despite mentioning other tricks internal
+    developers did pull to try and give themselves access to the most
+    resources.
 
 \end{itemize}
 
@@ -68,7 +82,15 @@ Cons:
 the problem being solved? Why is it important? If there is prior art, how was
 it insufficient? If the problem had not previously been solved, why not?}
 
-
+The motivation for the work is that Google, as a company, owns and runs many
+servers which are used to provide many services, and wants to ensure
+application developers don't have to worry about how their applications are
+going to effectively utilise the hardware. The work important internally at
+Google, and is relevant to the wider community as the open-source platform
+Kubernetes, is a result of the lessons learned from Borg. Although there is
+prior in providing many of the features Borg does, Borg is a unique in
+operating successfully at such a large scale for a relatively long time (10
+years).
 
 \section*{The Solution/Approach}
 
@@ -78,6 +100,19 @@ details, again using the paper as the source but again, not just copying text.
 Instead, focus on paraphrasing/synopsising, and extracting the essential
 details.}
 
+Google developed a cluster management system, which developed and evolved over
+10 years, developing a wide feature set making it suitable for being used at an
+industrial scale. Borg consists of many independent \textit{cells}, with the
+median cell size being around 10K (heterogeneous) machines. A cell is managed
+by a controller called the Borgmaster, and each machines has a Borglet process
+that communicates with the Borgmaster. Users submit jobs to cells, with each
+job consisting of one or more tasks, identical binary programs.
+
+The thing that makes Borg unique is simply the scale at which it operates at,
+both in feature-set, time and number of services it supports. Interestingly,
+nothing was actively planned to ensure it would endure like that, it was simply
+the case that when bottlenecks were being reached, as-need improvements to Borg
+ensured that scale never became an issue.
 
 \section*{Evaluation}
 
@@ -88,6 +123,19 @@ and weaknesses of the evaluation itself? Give highlights, not a point by point
 reproduction of the evaluation section(s). In rare cases, systems papers may
 not have any evaluation, in which case write `N/A' below.}
 
+The paper focuses on evaluating how effectively Borg utilises Google's many
+machines. However, the evaluation isn't a comparison of Borg against other,
+similar systems, it is an evaluation and comparison of how effective different
+choices of policies compare against the ones Borg uses (essentially, Borg is
+compared with non-optimal configurations of Borg in order to demonstrate that
+those configurations are non-optimal). The evaluation is strong in that is does
+contain a lot of data, but I feel it is weak in not containing much useful
+information. It is oddly structured, and I still feel like I don't understand
+many parts of it. Furthermore, claims are made about many of the non-optimal
+set-ups without justification, in order to demonstrate why Borg is better then
+other systems (for example, it is stated that many other organisations run
+batch and user-facing jobs on separate machines, but no evidence is given for
+this).
 
 \section*{Your Opinion}
 
@@ -96,14 +144,31 @@ the paper and the work it reports! Is the motivation convincing? The problem
 important? The approach a good or bad idea? Why? Which specific things annoyed
 you, or you thought were cool, or cool-but-flawed? Justify your opinions! Make
 an argument which will convince others of your opinion.}
-below
 
+From a historical perspective, I believe the paper does a good job of giving an
+overview of an impressive feat of engineering which has powered the systems of
+one of the largest companies on the internet. However, my takeaway is that is
+much more an overview and documentation of something that came to exist, as
+opposed to the paper presenting a piece of concrete research from which can
+be learnt.
+
+It's a difficult paper to comment on because the of the scale of what is being
+described, Borg is essentially the composition of many systems into a singular
+whole with 10 years of legacy.
+
+Although the paper is informative, I did find the evaluation section confusing
+as it wasn't clear what the overall takeaway was meant to be. The lack of
+conclusion to the paper itself mad it a slightly tougher read.
 
 \section*{Questions for the Authors}
 
 \textsl{Finally, imagine you're attending a talk about this paper given by one
 of the authors. Give at least 2 questions that you would like to ask, specific
 to the paper and the research it reports.}
+
+Is the plan for Kubernetes to replace Borg, or live alongside it?
+
+Why was the decision made to create Kubernetes instead of open-sourcing Borg?
 
 \bibliographystyle{unsrt}
 
