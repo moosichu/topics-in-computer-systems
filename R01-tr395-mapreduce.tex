@@ -24,6 +24,17 @@ i.e.,~what it adds over the state of the art. Paraphrase and extract the
 essentials rather than simply copying chunks of text. Be objective; later
 sections allow for your own opinion.}
 
+The paper introduces a technique called MapReduce for processing large amounts
+of data across a distributed cluster of computers. The technique works by
+providing an abstraction that allows users of the MapReduce system to implement
+two functions: a \textit{map} function and a \textit{reduce} function. Once
+implemented, the system will automatically handle running these functions
+across a large number of failure-prone computers - whilst handling the
+complexities associated with distributed computing. By requiring that functions
+the user implements adhere to a certain format, the MapReduce aims to simplify
+computations on data at this scale. The paper also describes and evaluates an
+implementation of MapReduce created by Google for their internal usage.
+
 
 \section*{Pros and Cons}
 
@@ -34,7 +45,7 @@ Pros:
 
 \begin{itemize}
 
-    \item Pro 1
+    \item The idea is simple to understand, yet powerful and useful.
 
     \item Pro 2
 
@@ -82,7 +93,23 @@ Cons:
 the problem being solved? Why is it important? If there is prior art, how was
 it insufficient? If the problem had not previously been solved, why not?}
 
+The motivation for the work the fact that internally at Google, programmers
+were required to expend a lot of time programming special-purpose systems for
+running their computations across the large clusters of machines belonging to
+Google. However, the computations themselves were conceptually simple, so this
+approach seemed like wasted effort - so an attempt was made to generalise the
+distribution of computations. The problem is important because of the growth of
+distributed systems, which has only exploded with the increase in scope, scale
+and number of datacenters since the paper was published
+\cite{VirtualizationGrowth}.
 
+TODO: prior art and why insufficient
+
+The reason the problem hadn't been previously solved is essentially because the
+problem was a novel one. Although distributed systems and networking had been
+around for a while, the pressing need to actually perform distributed
+computations at this scale on cheap, commodity hardware was a novel one. (TODO:
+cite this!)
 
 \section*{The Solution/Approach}
 
@@ -92,6 +119,11 @@ details, again using the paper as the source but again, not just copying text.
 Instead, focus on paraphrasing/synopsising, and extracting the essential
 details.}
 
+The problem was solved with the creation of MapReduce - as system that provides
+a restricted programming model in order to allow programs in that model to be
+automatically distributed with a transparent fault-tolerance system.
+
+TODO:
 
 \section*{Evaluation}
 
@@ -101,6 +133,8 @@ strengths and weaknesses of their system? What is your opinion of the strengths
 and weaknesses of the evaluation itself? Give highlights, not a point by point
 reproduction of the evaluation section(s). In rare cases, systems papers may
 not have any evaluation, in which case write `N/A' below.}
+
+The works is evaluated as so:
 
 
 \section*{Your Opinion}
