@@ -29,9 +29,9 @@ of data across a distributed cluster of computers. The technique works by
 providing an abstraction that allows users of the MapReduce system to implement
 two functions: a \textit{map} function and a \textit{reduce} function. Once
 implemented, the system will automatically handle running these functions
-across a large number of failure-prone computers - whilst handling the
+across a large number of failure-prone computers whilst handling the
 complexities associated with distributed computing. By requiring that functions
-the user implements adhere to a certain format, the MapReduce aims to simplify
+the user implements adhere to a certain format, MapReduce aims to simplify
 computations on data at this scale. The paper also describes and evaluates an
 implementation of MapReduce created by Google for their internal usage.
 
@@ -50,8 +50,8 @@ Pros:
     \item How some of the most obvious failure cases are dealt with is
     explained in a straight-forward manner.
 
-    \item The discussion of edge-cases that appeared in-practise in order to
-    allow future implementers of similar systems to anticipate them is
+    \item The discussion of edge-cases that appeared using MapReduce in order
+    to allow future implementers of similar systems to anticipate them is
     appreciated.
 
 \end{itemize}
@@ -68,7 +68,7 @@ Cons:
     best choice as it allows programmers to easily break out of the restricted
     programming model and break the assumptions of the MapReduce system.
     However, the potential benefits of an alternative, such as a
-    domain-specific language with desired guarantees are never discussed.
+    domain-specific language with desired guarantees are never mentioned.
 
     \item The behaviour of the distributed file system used to help provide
     many of the properties of MapReduce isn't really discussed despite it being
@@ -82,7 +82,7 @@ Cons:
 the problem being solved? Why is it important? If there is prior art, how was
 it insufficient? If the problem had not previously been solved, why not?}
 
-The motivation for the work the fact that internally at Google, programmers
+The motivation for the work is the fact that internally at Google, programmers
 were required to expend a lot of time programming special-purpose systems for
 running their computations across the large clusters of machines belonging to
 Google. However, the computations themselves were conceptually simple, so this
@@ -92,16 +92,16 @@ distributed systems, which has only exploded with the increase in scope, scale
 and number of datacenters since the paper was published
 \cite{VirtualizationGrowth}.
 
-The reason the problem hadn't been previously solved is essentially because the
-problem was a novel one. Although distributed systems and networking had been
-around for a while, the pressing need to actually perform distributed
-computations at this scale on cheap, commodity hardware in a controlled
-environment was a relatively novel one. Furthermore, although other distributed
-systems did exist - they either provided primitives and other functionality to
-allow users to more easily implement their own fault-tolerance systems in
-custom programs (therefore being hard to use) \cite{River} \cite{MPI}
+The reason the problem hadn't been previously solved is because although
+distributed systems and networking had been around for a while, the pressing
+need to actually perform distributed computations at this scale on cheap,
+commodity hardware in a controlled environment was a relatively novel one.
+Furthermore, although other distributed systems did exist - they either
+provided primitives and other functionality to allow users to more easily
+implement their own fault-tolerance behaviour in custom programs (therefore
+being hard to use) \cite{River} \cite{MPI}
 \cite{BridgingModelForParallelComputation}, or they were simply an
-implementation of specific algorithm such as a Sort \cite{NowSort}.
+implementation of specific algorithm such as a sort \cite{NowSort}.
 
 \section*{The Solution/Approach}
 
@@ -111,7 +111,7 @@ details, again using the paper as the source but again, not just copying text.
 Instead, focus on paraphrasing/synopsising, and extracting the essential
 details.}
 
-The problem was solved with the creation of MapReduce - as system that provides
+The problem was solved with the creation of MapReduce - a system that provides
 a restricted programming model in order to allow programs in that model to be
 automatically distributed with a transparent fault-tolerance system.
 
@@ -135,7 +135,7 @@ and weaknesses of the evaluation itself? Give highlights, not a point by point
 reproduction of the evaluation section(s). In rare cases, systems papers may
 not have any evaluation, in which case write `N/A' below.}
 
-The paper presents an evaluation of the performance two MapReduce programs
+The paper presents an evaluation of the performance of two MapReduce programs
 under various conditions. The first is a grep program that searches through one
 terabyte of data, and the second is a sorting program that similarly sorts one
 terabyte of data. In both cases the data consists of $10^{10}$ 100-byte
@@ -165,13 +165,13 @@ simple idea and convincingly explains why the idea \textit{could} be powerful
 in practise in addition to providing evidence where it \textit{has} had success
 at Google. Furthermore, I liked the fact that the paper didn't simply focus on
 the core of the idea itself, and also provided lessons learned and extensions
-which have provided useful in practise. However, the paper itself does have a
-few issues, primarily lying in the evaluation. The lack of even a simple
+which have proved useful in practise. However, the paper itself does have a few
+issues, primarily lying in the evaluation. The lack of even a simple
 evaluation, even purely on paper, of the scaling properties of the system is
 quite disappointing - and questions on potential bottlenecks, such as the
 master node, are left unanswered. Interestingly, Google appears to no longer
-use MapReduce internally \cite{NoMoreMapReduce}, although MapReduce has seen
-continued success in open source systems such as Hadoop \cite{Hadoop}.
+use MapReduce internally \cite{NoMoreMapReduce}, although MapReduce (the idea)
+has seen continued success in open source systems such as Hadoop \cite{Hadoop}.
 
 \section*{Questions for the Authors}
 
