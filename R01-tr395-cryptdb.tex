@@ -23,9 +23,24 @@ i.e.,~what it adds over the state of the art. Paraphrase and extract the
 essentials rather than simply copying chunks of text. Be objective; later
 sections allow for your own opinion.}
 
-The paper presents CryptDB
+The paper presents CryptDB, a system for encrypting data stored in SQL
+databases, such that administrators can never access the decrypted data and to
+ensure that adversaries can only decrypt the data of users who are logged in if
+they manage to compromise the system. CryptDB works using a combination of
+three ideas: executing SQL queries over encrypted data by using a
+\textit{SQL-aware encryption strategy}, using an \textit{adjustable query-based
+encryption scheme} to account for the fact that some queries may require
+encryption schemes that look more information and others, and finally
+\textit{chaining encryption keys to user passwords} so that data can only be
+decrypted when a given user is logged in. Although these techniques build on
+existing work, such as cryptographic tools for performing keyword search over
+encrypted data (TODO: cite song et al.), this is the first system which can
+work on top-of commercial database-management systems such as MySQL and
+PostreSQL (TODO: cite mysql and postresql) and applies the techniques in such a
+comprehensive fashion.
 
 \section*{Pros and Cons}
+
 
 \textsl{6 bullets. Succinctly state three positives and three negatives of the
 paper.}
@@ -34,11 +49,16 @@ Pros:
 
 \begin{itemize}
 
-    \item Pro 1
+    \item CryptDB doesn't require any modifications to the underlying DBMS
+    systems - it simply acts as a proxy server making adoption more
+    straight-forward.
 
-    \item Pro 2
+    \item It can integrate and interface nicely with existing applications,
+    requiring only 2-7 lines of code changes for three example applications in
+    the paper.
 
-    \item Pro 3
+    \item Encrypting data such that in-the-face-of compromise, it is still
+    unreadable is very pragmatic approach to security.
 
 \end{itemize}
 
@@ -46,12 +66,78 @@ Cons:
 
 \begin{itemize}
 
+    \item The paper fundamentally confuses two ideas. Firstly, the onion-based
+    encryption of all columns using a master key stored by CryptDB to allow
+    each column to reach a steady-state of minimumly-acceptable security.
+    Secondly, the per-data-item state of encryption used to secure data at a
+    per-user level such that data is confidential in the face of compromise
+    when the user isn't \textit{logged in}.
+
     \item Claims to have low overhead, despite reducing throughput by 26\% in
-    one case.
+    one case and requiring over triple the storage requirements for a database
+    in another case!
 
-    \item Con 2
+    \item Many applications such as TCP-C, PHPbb, Hot-CRP and Grad-apply are
+    mentioned without reference.
 
-    \item Con 3
+    \item the TCP-C benchmark doesn't seem applicable without correct security
+    configurations.
+
+    \item In order to provide meaningful security improvements, there is an
+    implicit assumption that the number of logged in users at any one time will
+    be sparse.
+
+    \item Does place restrictions on the DBMS, and potential reduces
+    maintainability for administrators.
+
+    \item The default behaviour of lazily peeling-back onion layers when needed
+    without question means that the steady state of any system will also be the
+    least-secure state of that system. Even if a given query is only executed
+    once in the lifetime of the system.
+
+    \item No real definition of \textit{user} given until later.
+
+    \item The fact that the current set of logged-in users is handled by a
+    magic SQL table that is actually on the proxy is really odd.
+
+    \item What if the application fails to log users out? Steady state for this
+    seems to be the least-secure.
+
+    \item Freely interchanges security and confidentially as terms, when they
+    are different.
+
+    \item There seem to be two different ideas in play. \textit{sensitive}
+    information seems different to regularly-encrypted information (which is
+    encrypted by master-key), which has the same problems as before.
+
+    \item The SEARCH encryption scheme requires the user to know what they are
+    going to need to search in the first place.
+
+    \item The example code given is horrendously formatted. (Different
+    non-mono-spaced fonts are used, alongside italics!)
+
+    \item Large chains of \textit{speaks-for} relationships could create a
+    weakest-link system (the security of the system depends who is logged on at
+    any given point in time!).
+
+    \item No consideration is given for how non-password based systems could be
+    handled (such as single sign-on, or magic email-links).
+
+    \item No mention on how whether the proxy supports prepared statements (is
+    it prone to SQL-injections?)
+
+    \item Some statements made, such as the fact that CryptDB should be run on
+    a different physical machine from the DBMS, without saying \textit{why}.
+
+    \item No mention of error handling (what if an operation isn't possible?).
+
+    \item Delayering the onion could cause massive stalls.
+
+    \item The DBMS performs the decryption of a given onion-layer itself when
+    needed, being given a copy of the private key for said layer! That could be
+    logged in the DBMS system!
+
+    \item What happens of the master key is compromised?
 
 \end{itemize}
 
@@ -80,6 +166,12 @@ strengths and weaknesses of their system? What is your opinion of the strengths
 and weaknesses of the evaluation itself? Give highlights, not a point by point
 reproduction of the evaluation section(s). In rare cases, systems papers may
 not have any evaluation, in which case write `N/A' below.}
+
+\item No control evalation (usage of system with all encryption turned off?)
+
+\item Evlauton had 10 users???
+
+\item Evaluation suffers from typical issues (not multiple trials, etc.)
 
 
 \section*{Your Opinion}
