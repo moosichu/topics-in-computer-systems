@@ -77,70 +77,70 @@ Cons:
     one case and requiring over triple the storage requirements for a database
     in another case!
 
-    \item Many applications such as TCP-C, PHPbb, Hot-CRP and Grad-apply are
-    mentioned without reference.
+    % \item Many applications such as TCP-C, PHPbb, Hot-CRP and Grad-apply are
+    % mentioned without reference.
 
-    \item the TCP-C benchmark doesn't seem applicable without correct security
-    configurations.
+    % \item the TCP-C benchmark doesn't seem applicable without correct security
+    % configurations.
 
     \item In order to provide meaningful security improvements, there is an
     implicit assumption that the number of logged in users at any one time will
     be sparse.
 
-    \item Does place restrictions on the DBMS, and potential reduces
-    maintainability for administrators.
+    % \item Does place restrictions on the DBMS, and potential reduces
+    % maintainability for administrators.
 
-    \item The default behaviour of lazily peeling-back onion layers when needed
-    without question means that the steady state of any system will also be the
-    least-secure state of that system. Even if a given query is only executed
-    once in the lifetime of the system.
+    % \item The default behaviour of lazily peeling-back onion layers when needed
+    % without question means that the steady state of any system will also be the
+    % least-secure state of that system. Even if a given query is only executed
+    % once in the lifetime of it.
 
-    \item No real definition of \textit{user} given until later.
+    % \item No real definition of \textit{user} given until later.
 
-    \item The fact that the current set of logged-in users is handled by a
-    magic SQL table that is actually on the proxy is really odd.
+    % \item The fact that the current set of logged-in users is handled by a
+    % magic SQL table that is actually on the proxy is really odd.
 
-    \item What if the application fails to log users out? Steady state for this
-    seems to be the least-secure.
+    % \item What if the application fails to log users out? Steady state for this
+    % seems to be the least-secure.
 
-    \item Freely interchanges security and confidentially as terms, when they
-    are different.
+    % \item Freely interchanges security and confidentially as terms, when they
+    % are different.
 
-    \item There seem to be two different ideas in play. \textit{sensitive}
-    information seems different to regularly-encrypted information (which is
-    encrypted by master-key), which has the same problems as before.
+    % \item There seem to be two different ideas in play. \textit{sensitive}
+    % information seems different to regularly-encrypted information (which is
+    % encrypted by master-key), which has the same problems as before.
 
-    \item The SEARCH encryption scheme requires the user to know what they are
-    going to need to search in the first place.
+    % \item The SEARCH encryption scheme requires the user to know what they are
+    % going to need to search for in the first place.
 
-    \item The example code given is horrendously formatted. (Different
-    non-mono-spaced fonts are used, alongside italics!)
+    % \item The example code given is horrendously formatted. (Different
+    % non-mono-spaced fonts are used, alongside italics!)
 
-    \item Large chains of \textit{speaks-for} relationships could create a
-    weakest-link system (the security of the system depends who is logged on at
-    any given point in time!).
+    % \item Large chains of \textit{speaks-for} relationships could create a
+    % weakest-link system (the security of the system depends who is logged on at
+    % any given point in time!).
 
-    \item No consideration is given for how non-password based systems could be
-    handled (such as single sign-on, or magic email-links).
+    % \item No consideration is given for how non-password based systems could be
+    % handled (such as single sign-on, or magic email-links).
 
-    \item No mention on how whether the proxy supports prepared statements (is
-    it prone to SQL-injections?)
+    % \item No mention on how whether the proxy supports prepared statements (is
+    % it prone to SQL-injections?)
 
-    \item Some statements made, such as the fact that CryptDB should be run on
-    a different physical machine from the DBMS, without saying \textit{why}.
+    % \item Some statements made, such as the fact that CryptDB should be run on
+    % a different physical machine from the DBMS, without saying \textit{why}.
 
-    \item No mention of error handling (what if an operation isn't possible?).
+    % \item No mention of error handling (what if an operation isn't possible?).
 
-    \item Delayering the onion could cause massive stalls.
+    % \item Delayering the onion could cause massive stalls.
 
-    \item The DBMS performs the decryption of a given onion-layer itself when
-    needed, being given a copy of the private key for said layer! That could be
-    logged in the DBMS system!
+    % \item The DBMS performs the decryption of a given onion-layer itself when
+    % needed, being given a copy of the private key for said layer! That could be
+    % logged in the DBMS system!
 
-    \item What happens of the master key is compromised?
+    % \item What happens if the master key is compromised?
 
-    \item Nothing is mentioned about migrating to CryptDB from a non-CryptDB
-    database.
+    % \item Nothing is mentioned about migrating to CryptDB from a non-CryptDB
+    % database.
 
 \end{itemize}
 
@@ -208,17 +208,32 @@ not have any evaluation, in which case write `N/A' below.}
 
 The evaluation section consists of four parts - a brief discussion on
 usability, a functional evaluation, a security evaluation and a performance
-evaluation. The evaluation indicates that a strength of the system comes from
-the minimal changes applications need in order to use CryptDB en-lieu of a
-plaintext DBMS in addition to the proportion of queries the system is capable
-of supporting from a fairly comprehensive trace.
+evaluation. The functional evaluation indicates that a strength of the system
+comes from the minimal changes applications need in order to use CryptDB
+en-lieu of a plaintext DBMS, furthermore, the system is capable of supporting a
+large proportion of queries from a fairly comprehensive trace. However, even if
+99\% of queries used are supported \textit{out-of-the-box}, the question is how
+important the last 1\% is.
 
-% \item No control evalation (usage of system with all encryption turned off?)
+The security evaluation simply seeks to analyse which levels of encryption
+different columns reach in the steady-state of typical usage. Unfortunately,
+the table used to give an overview of the steady-state of different
+applications features raw numbers, as opposed to percentages which would have
+made comparing the different rows more straight-forward.
 
-% \item Evlauton had 10 users???
+Finally, there is the performance evaluation, which seeks to answer what the
+overhead of using CryptDB with a MySQL server is. The answer given is that the
+impact varies from 7\%-100\% for throughput depending on the context and
+benchmark, to even an over 200\% impact on storage requirements in some
+situations. How acceptable the overhead is depends entirely on the context
+within which CryptDB would be desirable to use.
 
-% \item Evaluation suffers from typical issues (not multiple trials, etc.)
-
+The performance evaluation suffers from many of the issues common to systems
+papers - notably the lack of any kind of statistical analysis and the lack of
+running multiple trials of each benchmark. Furthermore, I was surprised to find
+that there was no evaluation of the \textit{cost} of the cryptographic features
+provided by CryptDB - what is the overhead like when CryptDB is used without
+those? That question is arguably an important one for migrations to CryptDB.
 
 \section*{Your Opinion}
 
@@ -232,7 +247,14 @@ I think both the paper and the work it reports provide a lot of value and
 potential, and that the ideas presented are both pragmatic and an improvement
 of the status quo. However, the paper isn't without issues, as I wrote down 23
 significant points of concern over course of reading the paper - such that
-deciding which to mention was extremely tough!
+deciding which to mention was extremely tough! These issues ultimately all stem
+from the fact that the paper leaves a lot of the potential questions about
+CryptDB unanswered, from the relatively simple (Does the system support
+prepared statements? What if an adversary blocks the specific traffic from an
+application to CryptDB that logs users out?), to higher-level (How is migration
+to CryptDB handled? What challenges do you see CryptDB facing?). There are also
+simpler issues, such as the introduction of terms such as \textit{users} without
+clarification until late in the paper, and poor formatting of example code.
 
 \section*{Questions for the Authors}
 
@@ -240,7 +262,12 @@ deciding which to mention was extremely tough!
 of the authors. Give at least 2 questions that you would like to ask, specific
 to the paper and the research it reports.}
 
-Why did you make the decision incorporate two ideas??
+For managing logged-in users, why was the decision made to have CryptDB spoof
+the existence of a \textit{magic} SQL table, instead of providing a bespoke
+API?
+
+What do you see as the biggest challenges for the potential adoption of
+CryptDB?
 
 \bibliographystyle{unsrt}
 
