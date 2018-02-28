@@ -33,11 +33,9 @@ encryption scheme} to account for the fact that some queries may require
 encryption schemes that look more information and others, and finally
 \textit{chaining encryption keys to user passwords} so that data can only be
 decrypted when a given user is logged in. Although these techniques build on
-existing work, such as cryptographic tools for performing keyword search over
-encrypted data (TODO: cite song et al.), this is the first system which can
-work on top-of commercial database-management systems such as MySQL and
-PostreSQL (TODO: cite mysql and postresql) and applies the techniques in such a
-comprehensive fashion.
+existing work, this is the first system which operates on top-of commercial
+database-management systems and applies the techniques in a comprehensive
+fashion.
 
 \section*{Pros and Cons}
 
@@ -58,7 +56,7 @@ Pros:
     the paper.
 
     \item Encrypting data such that in-the-face-of compromise, it is still
-    unreadable is very pragmatic approach to security.
+    unreadable is a pragmatic approach to security.
 
 \end{itemize}
 
@@ -67,15 +65,15 @@ Cons:
 \begin{itemize}
 
     \item The paper fundamentally confuses two ideas. Firstly, the onion-based
-    encryption of all columns using a master key stored by CryptDB to allow
-    each column to reach a steady-state of minimumly-acceptable security.
-    Secondly, the per-data-item state of encryption used to secure data at a
-    per-user level such that data is confidential in the face of compromise
-    when the user isn't \textit{logged in}.
+    encryption of columns using a master key stored by CryptDB to allow each
+    column to reach a steady-state of minimumly-acceptable security. Secondly,
+    the select per-data-item encryption used to secure data at a per-user level
+    such that data is confidential in the face of compromise when the user
+    isn't \textit{logged in}.
 
-    \item Claims to have low overhead, despite reducing throughput by 26\% in
-    one case and requiring over triple the storage requirements for a database
-    in another case!
+    % \item Claims to have low overhead, despite reducing throughput by 26\% in
+    % one case and requiring over triple the storage requirements for a database
+    % in another case!
 
     % \item Many applications such as TCP-C, PHPbb, Hot-CRP and Grad-apply are
     % mentioned without reference.
@@ -90,10 +88,10 @@ Cons:
     % \item Does place restrictions on the DBMS, and potential reduces
     % maintainability for administrators.
 
-    % \item The default behaviour of lazily peeling-back onion layers when needed
-    % without question means that the steady state of any system will also be the
-    % least-secure state of that system. Even if a given query is only executed
-    % once in the lifetime of it.
+    \item The default behaviour of lazily peeling-back onion layers when needed
+    without question means that the steady state of any system will also be the
+    least-secure state of that system. Even if a given query is only executed
+    once in the lifetime of it.
 
     % \item No real definition of \textit{user} given until later.
 
@@ -153,15 +151,13 @@ it insufficient? If the problem had not previously been solved, why not?}
 The motivation for the work is the fact that all systems will inevitably be
 insecure on some level, including database-management systems (DBMS).
 Therefore, there is pragmatic value in systems which allows for some-measure of
-Confidentiality even in the face of a complete breach of security by an
-adversary. SQL DBMSs are used for a wide-range of web-applications including
-online forums, general record-keeping systems and even personal websites.
-Therefore a system which can increase the confidentiality of DBMSs in the
-manner described also has a potentially large use-case. There is plenty of
-prior-art in increasing the confidentiality of DBMSs, including on-disk
-encryption, but many of these are insufficient in requiring the decryption of
-data for basic queries and relying on master-keys which can themselves be used
-to decrypt data when the system is compromised.
+confidentiality even when an adversary gains complete access to a system. A
+system which can increase the confidentiality of DBMSs in the manner described
+potentially has many use-cases.. There is plenty of prior-art in increasing the
+confidentiality of DBMSs, including on-disk encryption, but many of these are
+insufficient in requiring the decryption of data for basic queries and relying
+on master-keys which can themselves be used to decrypt data when the system is
+compromised.
 
 \section*{The Solution/Approach}
 
@@ -178,23 +174,21 @@ convert them into an encrypted form such that as many operations in a DBMS as
 possible operate on-and-using encrypted data.
 
 The first technique essentially provides \textit{minimally-acceptable}
-encryption of data in the general case, that-is, using a master-key, by-default
-CryptDB encrypts all data as securely as possible using various layers of
-encryption. However, this level of encryption doesn't for allow certain
-operations (such as \texttt{ORDER BY}), so when these operations are used
-CryptDB will decrypt the layers of encryption until the data is encrypted in a
-form where the required information for those operations is leaked. (In the
-case of an \texttt{ORDER BY} query, the data will still be encrypted, but will
-be transformed to a form where the ordering of encrypted data is preserved). As
-the decryption happens lazily, a steady-state of \textit{minimally-acceptable}
-encryption is reached. The innovation comes the combination of existing and new
-techniques to allow for the encryption to happen relatively transparently from
-both an application's and a DBMS's perspective.
+encryption of data in the general case. Using a master-key, by-default CryptDB
+encrypts all data as securely as possible using various layers of encryption.
+However, this level of encryption doesn't for allow certain SQL operations
+(such as \texttt{ORDER BY}), so when these operations are used CryptDB will
+decrypt the layers of encryption until the data is encrypted in a form where
+the required information for those operations is leaked. As the decryption
+happens lazily, a steady-state of \textit{minimally-acceptable} encryption is
+reached. The innovation comes the combination of existing and new techniques to
+allow for the encryption to happen relatively transparently from both an
+application's and a DBMS's perspective.
 
 The second technique allows certain specified sensitive information to be
-encrypted such that only the users to who have permission to access the data
-pertains may decrypt it. Therefore an adversary can only access such data if a
-user with relevant permission to a system is logged-in.
+encrypted such that only the users who have permission to access the data may
+decrypt it. Therefore an adversary can only access such data if a user with
+relevant permission to a system is logged-in.
 
 
 \section*{Evaluation}
@@ -208,11 +202,13 @@ not have any evaluation, in which case write `N/A' below.}
 
 The evaluation section consists of four parts - a brief discussion on
 usability, a functional evaluation, a security evaluation and a performance
-evaluation. The functional evaluation indicates that a strength of the system
-comes from the minimal changes applications need in order to use CryptDB
-en-lieu of a plaintext DBMS, furthermore, the system is capable of supporting a
-large proportion of queries from a fairly comprehensive trace. However, even if
-99\% of queries used are supported \textit{out-of-the-box}, the question is how
+evaluation.
+
+The functional evaluation indicates that a strength of the system comes from
+the minimal changes applications need in order to use CryptDB en-lieu of a
+plaintext DBMS. Furthermore, the system is capable of supporting a large
+proportion of queries from a fairly comprehensive trace. However, even if 99\%
+of queries used are supported \textit{out-of-the-box}, the question is how
 important the last 1\% is.
 
 The security evaluation simply seeks to analyse which levels of encryption
@@ -222,11 +218,11 @@ applications features raw numbers, as opposed to percentages which would have
 made comparing the different rows more straight-forward.
 
 Finally, there is the performance evaluation, which seeks to answer what the
-overhead of using CryptDB with a MySQL server is. The answer given is that the
-impact varies from 7\%-100\% for throughput depending on the context and
-benchmark, to even an over 200\% impact on storage requirements in some
-situations. How acceptable the overhead is depends entirely on the context
-within which CryptDB would be desirable to use.
+overhead of using CryptDB with a MySQL server is. The impact varies from
+7\%-100\% for throughput depending on the context and benchmark, to even an
+over 200\% impact on storage requirements in some situations. How acceptable
+the overhead is depends entirely on the context within which CryptDB would be
+desirable to use.
 
 The performance evaluation suffers from many of the issues common to systems
 papers - notably the lack of any kind of statistical analysis and the lack of
@@ -246,15 +242,16 @@ an argument which will convince others of your opinion.}
 I think both the paper and the work it reports provide a lot of value and
 potential, and that the ideas presented are both pragmatic and an improvement
 of the status quo. However, the paper isn't without issues, as I wrote down 23
-significant points of concern over course of reading the paper - such that
-deciding which to mention was extremely tough! These issues ultimately all stem
-from the fact that the paper leaves a lot of the potential questions about
-CryptDB unanswered, from the relatively simple (Does the system support
-prepared statements? What if an adversary blocks the specific traffic from an
-application to CryptDB that logs users out?), to higher-level (How is migration
-to CryptDB handled? What challenges do you see CryptDB facing?). There are also
-simpler issues, such as the introduction of terms such as \textit{users} without
-clarification until late in the paper, and poor formatting of example code.
+significant points of concern over course of reading the paper. These issues
+ultimately all stem from the fact that the paper leaves a lot of the potential
+questions about CryptDB unanswered, from the relatively simple (Does the system
+support prepared statements? What if an adversary blocks the specific traffic
+from an application to CryptDB that logs users out? Can't the master key for
+the onion-encryption be compromised?), to higher-level (How is migration to
+CryptDB handled? What challenges do you see CryptDB facing?). There are also
+simpler issues, such as the introduction of terms such as \textit{users}
+without clarification until late in the paper, and poor formatting of example
+code.
 
 \section*{Questions for the Authors}
 
