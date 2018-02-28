@@ -139,6 +139,9 @@ Cons:
 
     \item What happens of the master key is compromised?
 
+    \item Nothing is mentioned about migrating to CryptDB from a non-CryptDB
+    database.
+
 \end{itemize}
 
 \section*{The Problem/Motivation}
@@ -147,7 +150,18 @@ Cons:
 the problem being solved? Why is it important? If there is prior art, how was
 it insufficient? If the problem had not previously been solved, why not?}
 
-
+The motivation for the work is the fact that all systems will inevitably be
+insecure on some level, including database-management systems (DBMS).
+Therefore, there is pragmatic value in systems which allows for some-measure of
+Confidentiality even in the face of a complete breach of security by an
+adversary. SQL DBMSs are used for a wide-range of web-applications including
+online forums, general record-keeping systems and even personal websites.
+Therefore a system which can increase the confidentiality of DBMSs in the
+manner described also has a potentially large use-case. There is plenty of
+prior-art in increasing the confidentiality of DBMSs, including on-disk
+encryption, but many of these are insufficient in requiring the decryption of
+data for basic queries and relying on master-keys which can themselves be used
+to decrypt data when the system is compromised.
 
 \section*{The Solution/Approach}
 
@@ -156,6 +170,31 @@ set out above? How is it unique and/or innovative (if, indeed, it is)? Give
 details, again using the paper as the source but again, not just copying text.
 Instead, focus on paraphrasing/synopsising, and extracting the essential
 details.}
+
+The authors of the paper developed the a system called CryptDB which provides
+confidentiality in two forms, each using a different technique. For both
+techniques, the goal is to intercept SQL queries from an application, and
+convert them into an encrypted form such that as many operations in a DBMS as
+possible operate on-and-using encrypted data.
+
+The first technique essentially provides \textit{minimally-acceptable}
+encryption of data in the general case, that-is, using a master-key, by-default
+CryptDB encrypts all data as securely as possible using various layers of
+encryption. However, this level of encryption doesn't for allow certain
+operations (such as \texttt{ORDER BY}), so when these operations are used
+CryptDB will decrypt the layers of encryption until the data is encrypted in a
+form where the required information for those operations is leaked. (In the
+case of an \texttt{ORDER BY} query, the data will still be encrypted, but will
+be transformed to a form where the ordering of encrypted data is preserved). As
+the decryption happens lazily, a steady-state of \textit{minimally-acceptable}
+encryption is reached. The innovation comes the combination of existing and new
+techniques to allow for the encryption to happen relatively transparently from
+both an application's and a DBMS's perspective.
+
+The second technique allows certain specified sensitive information to be
+encrypted such that only the users to who have permission to access the data
+pertains may decrypt it. Therefore an adversary can only access such data if a
+user with relevant permission to a system is logged-in.
 
 
 \section*{Evaluation}
@@ -167,11 +206,18 @@ and weaknesses of the evaluation itself? Give highlights, not a point by point
 reproduction of the evaluation section(s). In rare cases, systems papers may
 not have any evaluation, in which case write `N/A' below.}
 
-\item No control evalation (usage of system with all encryption turned off?)
+The evaluation section consists of four parts - a brief discussion on
+usability, a functional evaluation, a security evaluation and a performance
+evaluation. The evaluation indicates that a strength of the system comes from
+the minimal changes applications need in order to use CryptDB en-lieu of a
+plaintext DBMS in addition to the proportion of queries the system is capable
+of supporting from a fairly comprehensive trace.
 
-\item Evlauton had 10 users???
+% \item No control evalation (usage of system with all encryption turned off?)
 
-\item Evaluation suffers from typical issues (not multiple trials, etc.)
+% \item Evlauton had 10 users???
+
+% \item Evaluation suffers from typical issues (not multiple trials, etc.)
 
 
 \section*{Your Opinion}
@@ -181,14 +227,20 @@ the paper and the work it reports! Is the motivation convincing? The problem
 important? The approach a good or bad idea? Why? Which specific things annoyed
 you, or you thought were cool, or cool-but-flawed? Justify your opinions! Make
 an argument which will convince others of your opinion.}
-below
 
+I think both the paper and the work it reports provide a lot of value and
+potential, and that the ideas presented are both pragmatic and an improvement
+of the status quo. However, the paper isn't without issues, as I wrote down 23
+significant points of concern over course of reading the paper - such that
+deciding which to mention was extremely tough!
 
 \section*{Questions for the Authors}
 
 \textsl{Finally, imagine you're attending a talk about this paper given by one
 of the authors. Give at least 2 questions that you would like to ask, specific
 to the paper and the research it reports.}
+
+Why did you make the decision incorporate two ideas??
 
 \bibliographystyle{unsrt}
 
