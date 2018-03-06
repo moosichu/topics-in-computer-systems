@@ -76,6 +76,51 @@ Cons:
 
     % Note paper mentions false positives, need to know how many of them exist?
 
+    \item Relies on heavily on applications to be deterministic, which is an
+    issue with multi-threaded systems. Furthermore, %DONE
+
+    \item There are some issues with the KLEE's environment system. Such
+    as the assumption that the results of a concrete function call will be
+    deterministic. % Solution to this?
+
+    \item Implementing the environment at the system call level instead
+    of the C library level is less portable.
+
+    \item Using a custom version of the C standard library (instead of the
+    default one), and checking \textit{it} for errors further reduces
+    portability.
+
+    \item Is there anything someone can do to mark library code as out of their
+    control. (And therefore potentially even have their code avoid the erronous
+    code?).
+
+    \item Can users state custom end-state failure cases?
+
+    \item Inconsistenty in example calls to KLEE (./run vs klee).
+
+    \item Is there a way to test non-batch programs? Function calls?
+
+    \item Is how long does it take to run the tests KLEE generates vs manual
+    tests? Is testing relative coverage against manual tests fair because
+    normally these test for regressive behaviour? Taking 89 hours to run is a
+    long time. Time of length of execution doesn't say much without hardware it
+    ran on. Completely different types of tests.
+
+    \item Asserts take advantage of it well! (essentially depends on inline for
+    code coverage meaningful). Concrete vs abstract test cases.
+
+    \item Arguably goes too much into specific bugs that were found, strese the
+    point a lot.
+
+    \item Code coverage is a weird heuristic to test against. Does KLEE generate
+    tests to test for code not covered?
+
+    \item One of the footnotes is cutoff (page 220).
+
+    \item Can it integrate into version control systems to check which lines of
+    code have been changed to make. Automated regression tests? "Bake"
+    coverage?
+
 \end{itemize}
 
 \section*{The Problem/Motivation}
@@ -84,7 +129,15 @@ Cons:
 the problem being solved? Why is it important? If there is prior art, how was
 it insufficient? If the problem had not previously been solved, why not?}
 
-
+Computer programs are buggy \cite{GitHubBugs}, however, finding those bugs is
+hard. (TODO) Therefore, tools to find potential bugs in programs is an
+important problem. Symbolic execution tools aim to help with one particular
+aspect of finding erroneous code, by being able to execute many possible
+execution paths in a program in order to find statements where an undesired
+state \textit{could} be reached given valid inputs. However, previous tools
+struggled to operate on larger programs (due to exponential path blow-up) and on
+programs which interact with an external environment (such as an operating
+system).
 
 \section*{The Solution/Approach}
 
@@ -94,6 +147,17 @@ details, again using the paper as the source but again, not just copying text.
 Instead, focus on paraphrasing/synopsising, and extracting the essential
 details.}
 
+The authors of the paper have created a symbolic execution tool called KLEE,
+which is built on top of previous work by the authors \cite{EXE}. It improves
+upon EXE in two ways. The first, is in the implementation of a variety of
+optimisation techniques to help mitigate the path-explosion problem, meaning
+far fewer states are created when KLEE symbolically executes a program. The
+second improvement is the introduction of a mechanism to help tackle the
+problem of symbolically executing a program's interaction with an external
+environment. This is unique and innovative in allowing a user to implement
+their own version of system-calls which can be symbolically executed by KLEE.
+As this can be done in the same language as the user's programs, they could
+potentially write their own custom implementations of these.
 
 \section*{Evaluation}
 
@@ -104,6 +168,29 @@ and weaknesses of the evaluation itself? Give highlights, not a point by point
 reproduction of the evaluation section(s). In rare cases, systems papers may
 not have any evaluation, in which case write `N/A' below.}
 
+The evaluation mainly takes the form of evaluating the code coverage KLEE
+manages to achieve on a selection of programs, including command line tools and
+an operating system kernel. The questions it aims to answer are: \textit{How
+does the code coverage of KLEE compare with a hand-written test-suite? Is KLEE
+able to produce meaningful results?} The evaluation demonstrates two strengths
+of the system. Firstly, previous symbolic code execution tools don't appear to
+have been able to execute programs of the scale KLEE can handle. Secondly, KLEE
+does manage to achieve comprehensive code coverage, often being able to achieve
+a code coverage of 90\% for the programs tested. The \textit{proof in the
+pudding} comes from the fact that these tests did produce meaningful results,
+and managed to uncover real bugs in some widely used programs such as GNU
+Coreutils \cite{Coreutils}.
+
+Although the evaluation demonstrates the perceived strengths of KLEE, on of its
+pitfalls comes through from not discussing or exploring its potential
+weaknesses. For example, no mention is made on the type of programs KLEE could
+struggle with, or what could cause it to achieve poor code coverage.
+Furthermore, no mention is made of the running-time beyond stating that one of
+the runs of KLEE took 89 hours.
+
+Furthermore, comparing the code coverage of a symbolic execution system with
+hand-written unit-tests seems like a flawed comparison, as they test for
+different things and KLEE would be an addition, not a replacement for them.
 
 \section*{Your Opinion}
 
@@ -112,14 +199,30 @@ the paper and the work it reports! Is the motivation convincing? The problem
 important? The approach a good or bad idea? Why? Which specific things annoyed
 you, or you thought were cool, or cool-but-flawed? Justify your opinions! Make
 an argument which will convince others of your opinion.}
-below
 
+Overall I think the paper and the work it reports is good. I find the
+motivation convincing, making bugs in programs easier to find is always a goal
+worth striving for! The most impressive aspect of the paper is the fact that
+the system was used on GNU Coreutils and managed to find a few undetected bugs.
+
+The paper does have a few flaws. The paper avoids mention of any potential
+further work or improvements to the system, making it hard for the reader to
+know if potential shortfalls could be address. For example, KLEE is unable
+non-deterministic programs, but no mention is made of how that could be tested
+for or even worked around.
 
 \section*{Questions for the Authors}
 
 \textsl{Finally, imagine you're attending a talk about this paper given by one
 of the authors. Give at least 2 questions that you would like to ask, specific
 to the paper and the research it reports.}
+
+Although not done for this implementation (due to the complexity of the
+problem), would you ideally mock C-library calls instead of system calls?
+
+Would it be possible to implement optimisations which work in conjuction with
+version control systems to ensure that only changes to programs get tested to
+help cut down on the run-time of KLEE?
 
 \bibliographystyle{unsrt}
 
