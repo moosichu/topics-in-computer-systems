@@ -51,7 +51,12 @@ Pros:
     \item Support for LLVM means that KLEE can more easily support many
     languages which have an LLVM backend.
 
-    \item Pro 3
+    \item The compact state representation using an immutable heap structure
+    is sensible.
+
+    \item The paper lists the optimisations implemented in KLEE that make it
+    improve over its predecessor EXE (TODO: cite) \cite{EXE} in a clear and
+    concise manner.
 
 \end{itemize}
 
@@ -59,12 +64,15 @@ Cons:
 
 \begin{itemize}
 
-    \item The user is still required to think about what inputs could cause errors
-    and tell KLEE which command line argument to use for example.
+    \item The user is still required to think about what inputs could cause
+    errors and tell KLEE which command line argument to use for example.
 
-    \item Con 2
+    \item Although the paper has an explicit evaluation section, some
+    evaluation appears in other sections making the paper more cluttered than
+    necessary.
 
-    \item Con 3
+    \item The environment modelling claims users need not know about the
+    internals of KLEE in order to model the environment. but...
 
     % Note paper mentions false positives, need to know how many of them exist?
 
