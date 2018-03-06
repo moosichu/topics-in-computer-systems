@@ -49,14 +49,13 @@ Pros:
     examples helped with this a lot.
 
     \item Support for LLVM means that KLEE can more easily support many
-    languages which have an LLVM backend.
+    languages which have an LLVM backend. (Although this is never mentioned).
 
-    \item The compact state representation using an immutable heap structure
-    is sensible.
+    % \item The compact state representation using an immutable heap structure
+    % is sensible.
 
     \item The paper lists the optimisations implemented in KLEE that make it
-    improve over its predecessor EXE (TODO: cite) \cite{EXE} in a clear and
-    concise manner.
+    improve over its predecessor EXE \cite{EXE} in a clear and concise manner.
 
 \end{itemize}
 
@@ -65,61 +64,64 @@ Cons:
 \begin{itemize}
 
     \item The user is still required to think about what inputs could cause
-    errors and tell KLEE which command line argument to use for example.
+    errors and tell KLEE which command line arguments to use.
 
     \item Although the paper has an explicit evaluation section, some
     evaluation appears in other sections making the paper more cluttered than
     necessary.
 
-    \item The environment modelling claims users need not know about the
-    internals of KLEE in order to model the environment. but...
+    \item The paper arguably goes into too much details about specific bugs which
+    KLEE found.
+
+    % \item The environment modelling claims users need not know about the
+    % internals of KLEE in order to model the environment. but...
 
     % Note paper mentions false positives, need to know how many of them exist?
 
-    \item Relies on heavily on applications to be deterministic, which is an
-    issue with multi-threaded systems. Furthermore, %DONE
+    % \item Relies on heavily on applications to be deterministic, which is an
+    % issue with multi-threaded systems.
 
-    \item There are some issues with the KLEE's environment system. Such
-    as the assumption that the results of a concrete function call will be
-    deterministic. % Solution to this?
+    % \item There are some issues with the KLEE's environment system. Such
+    % as the assumption that the results of a concrete function call will be
+    % deterministic. % Solution to this?
 
-    \item Implementing the environment at the system call level instead
-    of the C library level is less portable.
+    % \item Implementing the environment at the system call level instead
+    % of the C library level is less portable.
 
-    \item Using a custom version of the C standard library (instead of the
-    default one), and checking \textit{it} for errors further reduces
-    portability.
+    % \item Using a custom version of the C standard library (instead of the
+    % default one), and checking \textit{it} for errors further reduces
+    % portability.
 
-    \item Is there anything someone can do to mark library code as out of their
-    control. (And therefore potentially even have their code avoid the erronous
-    code?).
+    % \item Is there anything someone can do to mark library code as out of their
+    % control. (And therefore potentially even have their code avoid the erronous
+    % code?).
 
-    \item Can users state custom end-state failure cases?
+    % \item Can users state custom end-state failure cases?
 
-    \item Inconsistenty in example calls to KLEE (./run vs klee).
+    % \item Inconsistenty in example calls to KLEE (./run vs klee).
 
-    \item Is there a way to test non-batch programs? Function calls?
+    % \item Is there a way to test non-batch programs? Function calls?
 
-    \item Is how long does it take to run the tests KLEE generates vs manual
-    tests? Is testing relative coverage against manual tests fair because
-    normally these test for regressive behaviour? Taking 89 hours to run is a
-    long time. Time of length of execution doesn't say much without hardware it
-    ran on. Completely different types of tests.
+    % \item Is how long does it take to run the tests KLEE generates vs manual
+    % tests? Is testing relative coverage against manual tests fair because
+    % normally these test for regressive behaviour? Taking 89 hours to run is a
+    % long time. Time of length of execution doesn't say much without hardware it
+    % ran on. Completely different types of tests.
 
-    \item Asserts take advantage of it well! (essentially depends on inline for
-    code coverage meaningful). Concrete vs abstract test cases.
+    % \item Asserts take advantage of it well! (essentially depends on inline for
+    % code coverage meaningful). Concrete vs abstract test cases.
 
-    \item Arguably goes too much into specific bugs that were found, strese the
-    point a lot.
+    % \item Arguably goes too much into specific bugs that were found, strese the
+    % point a lot.
 
-    \item Code coverage is a weird heuristic to test against. Does KLEE generate
-    tests to test for code not covered?
+    % \item Code coverage is a weird heuristic to test against. Does KLEE generate
+    % tests to test for code not covered?
 
-    \item One of the footnotes is cutoff (page 220).
+    % \item One of the footnotes is cutoff (page 220).
 
-    \item Can it integrate into version control systems to check which lines of
-    code have been changed to make. Automated regression tests? "Bake"
-    coverage?
+    % \item Can it integrate into version control systems to check which lines of
+    % code have been changed to make. Automated regression tests? "Bake"
+    % coverage?
 
 \end{itemize}
 
