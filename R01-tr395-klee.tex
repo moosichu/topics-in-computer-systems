@@ -24,6 +24,16 @@ i.e.,~what it adds over the state of the art. Paraphrase and extract the
 essentials rather than simply copying chunks of text. Be objective; later
 sections allow for your own opinion.}
 
+The paper introduces KLEE, a symbolic execution tool for automatically
+generating tests with the aim of achieving high coverage on a wide variety of
+programs. It builds on previous symbolic execution work, applying ideas and
+techniques to programs beyond the hand-picked benchmarks that have previously
+been used in the field. The contribution over the state of the art is in how
+how it aims to tackle the exponential growth in execution paths that can happen
+in symbolic execution. Furthermore it aims to solve what is known as the
+\textit{environment problem}, where external state can impact the execution of
+programs. TODO: eval
+
 
 \section*{Pros and Cons}
 
@@ -34,9 +44,12 @@ Pros:
 
 \begin{itemize}
 
-    \item Pro 1
+    \item Well written, despite no prior experience with the subject matter I
+    never once felt confused or lacking for information. Giving a clear usage
+    examples helped with this a lot.
 
-    \item Pro 2
+    \item Support for LLVM means that KLEE can more easily support many
+    languages which have an LLVM backend.
 
     \item Pro 3
 
@@ -46,11 +59,14 @@ Cons:
 
 \begin{itemize}
 
-    \item Con 1
+    \item The user is still required to think about what inputs could cause errors
+    and tell KLEE which command line argument to use for example.
 
     \item Con 2
 
     \item Con 3
+
+    % Note paper mentions false positives, need to know how many of them exist?
 
 \end{itemize}
 
