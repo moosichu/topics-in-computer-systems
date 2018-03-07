@@ -44,7 +44,7 @@ Pros:
 
 \begin{itemize}
 
-    \item BGI appears to make strides to solving a very real problem - the blue
+    \item BGI appears to make strides in solving a very real problem - the blue
     screen of death.
 
     \item The paper is honest about what BGI does \textit{not} protect against,
@@ -61,18 +61,18 @@ Cons:
 
     \item Although isolating one extension this way may cause an overall
     decrease in performance of single-digit percentages, what would the effect
-    be if \textit{all} extensions were isolated? This could be much worse then
+    be if \textit{all} extensions were isolated? This could be much worse a
     expected.
 
-    \item Although it doesn't require any changes to the source code of a
-    extension, recompilation does mean that ultimately it's up to an extension
+    \item Although it doesn't require any changes to the source code of an
+    extension, recompilation does mean that ultimately it is up to an extension
     provider to ensure they compile their code with this compiler. Therefore
-    older and unsupported extensions are unlikely to be able to get the desired
+    older and unsupported extensions are unlikely to be able to achieve desired
     protections under this system.
 
-    \item Due to the per-byte level granularity of this system, an 12.5\%
-    memory overhead is a rather significant one, also opening up the potential
-    for pathological cache misses in some cases which could be important for
+    \item Due to the per-byte level granularity of BGI, a 12.5\% memory
+    overhead is a rather significant one, also opening up the potential for
+    pathological cache misses in some cases which could be important for
     performance-sensitive extensions.
 
 
@@ -85,13 +85,13 @@ the problem being solved? Why is it important? If there is prior art, how was
 it insufficient? If the problem had not previously been solved, why not?}
 
 The motivation for the work is that kernel extensions are often buggy and the
-cause of operating system failures \cite{OSErrors}. Therefore, isolating them
-such that these errors don't drag down an entire system with them is an
-important problem to solve. Although there have been previous approaches to
+cause of operating system failures \cite{OSErrors}. Therefore, isolating
+extensions such that these errors don't drag down an entire system with them is
+an important problem to solve. Although there have been previous approaches to
 tackling this problem, the authors argue that they suffer from various issues
-that make them unsuitable for general usage. These issues including large
-overheads, specialised hardware requirements, weak isolation guarantees and/or
-the need to manually modify the extensions to support the isolation systems.
+that make them unsuitable for general usage. These include large overheads,
+specialised hardware requirements, weak isolation guarantees and/or the need to
+manually modify the extensions to support the isolation systems.
 
 \section*{The Solution/Approach}
 
@@ -106,7 +106,7 @@ compiler on their extensions to get the isolation protection BGI aims to
 provide. BGI works by associating an access control list of \textit{read},
 \textit{write}, \textit{icall}, \textit{type}, and \textit{ownership} with
 every byte of virtual memory that kernel extensions can interact with. Kernel
-calls are wrapped using an \textit{interposition library} to make sure values
+calls are wrapped using an \textit{interposition library} to ensure values
 returned from the kernel have appropriate permissions set, and to ensure
 arguments passed to the kernel satisfy necessary permission conditions. The
 compiler inserts code in support of managing access control as well. BGI runs
@@ -168,11 +168,11 @@ The compile-time nature of the system is probably the most problematic part of
 it. As the system isn't a simple update to a kernel, there is a dependency on
 extension writers to re-compile their code and distribute the updates.
 Furthermore, due to the static nature of BGI, if there are bugs in the compiler
-itself, distributing bug-fixes and updates due to errors caused by that is a
+itself, distributing bug-fixes and updates due to errors caused by them is a
 hard problem to solve.
 
 Although the paper goes really in-depth into the mechanisms of the system, this
-is probably necessary to the closed-source nature of the system.
+is probably necessary due to the closed-source nature of the system.
 
 
 \section*{Questions for the Authors}
@@ -182,7 +182,7 @@ of the authors. Give at least 2 questions that you would like to ask, specific
 to the paper and the research it reports.}
 
 Since the publication of the paper, has BGI seen use in Windows, and if not,
-why?
+why not?
 
 Would using a binary rewriter installed into the kernel that can update
 extensions itself be a good idea?
