@@ -25,7 +25,11 @@ essentials rather than simply copying chunks of text. Be objective; later
 sections allow for your own opinion.}
 
 The paper presents Pivot Tracing, a system for monitoring framework for
-distributed system. TODO: eval
+distributed systems. It allows for dynamic instrumentation similar to what
+systems like DTrace provide (TODO: reference), with the contribution that
+traces can be propagated across system boundaries. This is implemented using a
+novel \textit{happened-before join} operator, which allows SQL-like join
+operations to be used to aggregate data across systems.
 
 \section*{Pros and Cons}
 
@@ -36,11 +40,20 @@ Pros:
 
 \begin{itemize}
 
-    \item Pro 1
+    % \item Having tracepoints only be references until at given query installed
+    % is a good idea that helps reduce overhead.
 
-    \item Pro 2
+    \item The motivation is clear and well-presented, allowing the reader of
+    the paper to fully understand the context of the problem going into the
+    paper.
 
-    \item Pro 3
+    \item Although not part of the paper itself, the filmed presentation is
+    easily available and complements it nicely.
+
+    \item The discussion section presents some good ideas and presents possible
+    avenues for further work, it also helps frame the authors perspective of
+    the system and helps answer questions that may spring to a reader's mind
+    (such as, is the system Java specific?).
 
 \end{itemize}
 
@@ -48,11 +61,41 @@ Cons:
 
 \begin{itemize}
 
-    \item Con 1
+    % \item The overhead measurement section in the evaluation is really brief
+    % and lacking possible test cases.
 
-    \item Con 2
 
-    \item Con 3
+    \item Requires fairly significant modifications to the source code of what
+    is being traced. (50-200 lines of code need to be implemented in order to
+    support the 'baggage' system?)
+
+    % \item Tracepoints have to be manually defined. Application level
+
+    % \item Implements Baggage. (key-value container)
+
+    % \item Any mentino of the probe effect?
+
+    % \item Tracebo
+
+    % \item No common theme in naming is actually confusing (Advice, Baggage,
+    % Weaving).
+
+    % \item Spends a lot of time on the bug found in Hadoop.
+
+    % \item Benchmarks have a 0.3\% baseline overhead, but do they test for
+    % potential worst cases?
+
+    % \item Maximum overhead of 14.3\%.
+
+    % \item Although per-workload overhead is 1.5\%, what is the global overhead?
+
+    \item Even after watching the video and feeling like I have a good
+    understanding of the system, Figure 6 (on how the optimised query works)
+    still feels unhelpful to that understanding.
+
+    \item The \textit{happened-before join} operator is an abstract
+    representation of a fairly straight-forward idea - the focus on that
+    arguably makes the paper harder to understand.
 
 \end{itemize}
 
@@ -62,6 +105,13 @@ Cons:
 the problem being solved? Why is it important? If there is prior art, how was
 it insufficient? If the problem had not previously been solved, why not?}
 
+Instrumentation is an important part of maintaining systems (TODO: reference).
+Unfortunately, previous techniques lack desirable features, such as being able
+to arbitrarily decide instrumentation at run time (as is the case with logs),
+or being able to instrument code across system boundaries such as machines (as
+is the case with DTrace TODO: reference). The reason this problem hasn't been
+previously solved is because being able to arbitrarily instrument code across
+boundaries in a distributed system is a hard problem to solve.
 
 
 \section*{The Solution/Approach}
@@ -71,6 +121,20 @@ set out above? How is it unique and/or innovative (if, indeed, it is)? Give
 details, again using the paper as the source but again, not just copying text.
 Instead, focus on paraphrasing/synopsising, and extracting the essential
 details.}
+
+The authors have introduced a technique called Pivot Tracing, that allows for
+the dynamic instrumentation DTrace and Fay provide (TODO: reference), in
+addition to allowing users correlate information from different points of the
+system as found in causal tracing. (TODO: reference Dapper, x-trace and pip).
+The innovation the paper claims to make is the introduction of a
+\textit{happened-before join} operator, which is based on Lamport's
+happened-before relation. The paper additionally presents a Java-based
+implementation of this system, that can run on various Apache Hadoop
+\cite{Hadoop} services. This implementation consists of an agent-based system
+that runs a thread inside each process that can dynamically instrument Java, in
+addition to a \textit{Baggage} library for use by what is being monitored.
+Finally, a front-end client library is used to define tracepoints, compile
+queries and submit the results of this to the agents.
 
 
 \section*{Evaluation}
@@ -82,6 +146,33 @@ and weaknesses of the evaluation itself? Give highlights, not a point by point
 reproduction of the evaluation section(s). In rare cases, systems papers may
 not have any evaluation, in which case write `N/A' below.}
 
+The evaluation of the Pivot Tracing prototype consists of 3 sections: a case
+study, a demonstration of it's end-to-end latency recording features, and an
+analysis of the overhead the system presents. The evaluation aims to answer:
+can Pivot Tracing help solve real-world problems, and what overhead does the
+system present? The former question is answered by a thorough breakdown on how
+a bug in Hadoop was first noticed, and then tracked-down to its source using
+the Pivot Tracing. The second section expands on this by showing how the
+latency-measuring features of the system allowed a faulty-link to be
+discovered. The final section aims to measure the performance overhead of the
+Pivot Tracing system, by showing the latency effects of increased amounts of
+\textit{baggage} in a micro-benchmark, before demonstrating the latency
+overheads of different configurations of Pivot Tracing in a single
+marco-benchmark.
+
+In my opinion whilst the rest of the evaluation demonstrates what it aims to do
+quite thoroughly, the benchmarking section is lacking in ways both common to
+systems papers (a lack of multiple trials, and statistical analysis of the
+results), and in ways unique to this paper. The first oddity is a lack of any
+kind of throughput overhead analysis - the focus is entirely on latency. Secondly,
+although the paper mentions the fact that four separate benchmark were tested,
+only the results from one were displayed.
+
+There is also a lack of analysis of any probe-effect Pivot Tracing could incur
+on a system. Finally, I would have liked to have seen a comparison of the
+performance of Pivot Trace statements that are semantically equivalent to the
+traces Hadoop itself provides.
+
 
 \section*{Your Opinion}
 
@@ -90,7 +181,22 @@ the paper and the work it reports! Is the motivation convincing? The problem
 important? The approach a good or bad idea? Why? Which specific things annoyed
 you, or you thought were cool, or cool-but-flawed? Justify your opinions! Make
 an argument which will convince others of your opinion.}
-below
+
+Overall I think the paper was well presented and understandable, although a
+video of the presentation on it helped a lot with that. The figures especially
+seemed designed around the animations the presentation could display, and were
+harder to parse in the paper itself. Due to my lack of domain expertise with
+using distributed systems, it is hard to evaluate the \textit{usefulness} of a
+system like this and whether the overheads it presents are worth the benefits
+it provides. My largest grievance with the approach is the fairly significant
+changes that had to be made to each module in the Hadoop framework of 50~100
+lines of code. However, if this were merged upstream that would be much less of
+an issue, and in theory an improvement over what these systems already aim t
+provide.
+
+Finally, the evaluation of the system is far too focused on the case-study
+(over multiple pages), compared to the half-page the performance evaluation
+receives.
 
 
 \section*{Questions for the Authors}
@@ -98,6 +204,14 @@ below
 \textsl{Finally, imagine you're attending a talk about this paper given by one
 of the authors. Give at least 2 questions that you would like to ask, specific
 to the paper and the research it reports.}
+
+Is the eventual goal to see tracing systems like this merged into the upstream
+of distributed systems like \textit{Hadoop}, or for a standard to emerge that
+can live externally to unmodified versions of them?
+
+Although the \textit{happens-before join} is the fundamental operation around
+which this system is built, are there any others that you think could be
+beneficial to a system like this?
 
 \bibliographystyle{unsrt}
 
