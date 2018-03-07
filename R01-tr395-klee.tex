@@ -32,8 +32,7 @@ been used in the field. The contribution over the state of the art is in how
 how it aims to tackle the exponential growth in execution paths that can happen
 in symbolic execution. Furthermore it aims to solve what is known as the
 \textit{environment problem}, where external state can impact the execution of
-programs. TODO: eval
-
+programs.
 
 \section*{Pros and Cons}
 
@@ -132,14 +131,14 @@ the problem being solved? Why is it important? If there is prior art, how was
 it insufficient? If the problem had not previously been solved, why not?}
 
 Computer programs are buggy \cite{GitHubBugs}, however, finding those bugs is
-hard. (TODO) Therefore, tools to find potential bugs in programs is an
-important problem. Symbolic execution tools aim to help with one particular
-aspect of finding erroneous code, by being able to execute many possible
-execution paths in a program in order to find statements where an undesired
-state \textit{could} be reached given valid inputs. However, previous tools
-struggled to operate on larger programs (due to exponential path blow-up) and on
-programs which interact with an external environment (such as an operating
-system).
+hard \cite{FindingBugsHard}. Therefore, tools to find potential bugs in
+programs is an important problem. Symbolic execution tools aim to help with one
+particular aspect of finding erroneous code, by being able to execute many
+possible execution paths in a program in order to find statements where an
+undesired state \textit{could} be reached given valid inputs. However, previous
+tools struggled to operate on larger programs (due to exponential path blow-up)
+and on programs which interact with an external environment (such as an
+operating system).
 
 \section*{The Solution/Approach}
 

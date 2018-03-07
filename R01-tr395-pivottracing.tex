@@ -26,10 +26,10 @@ sections allow for your own opinion.}
 
 The paper presents Pivot Tracing, a system for monitoring framework for
 distributed systems. It allows for dynamic instrumentation similar to what
-systems like DTrace provide (TODO: reference), with the contribution that
-traces can be propagated across system boundaries. This is implemented using a
-novel \textit{happened-before join} operator, which allows SQL-like join
-operations to be used to aggregate data across systems.
+systems like DTrace provide \cite{DTrace}, with the contribution that traces
+can be propagated across system boundaries. This is implemented using a novel
+\textit{happened-before join} operator, which allows SQL-like join operations
+to be used to aggregate data across systems.
 
 \section*{Pros and Cons}
 
@@ -105,13 +105,14 @@ Cons:
 the problem being solved? Why is it important? If there is prior art, how was
 it insufficient? If the problem had not previously been solved, why not?}
 
-Instrumentation is an important part of maintaining systems (TODO: reference).
-Unfortunately, previous techniques lack desirable features, such as being able
-to arbitrarily decide instrumentation at run time (as is the case with logs),
-or being able to instrument code across system boundaries such as machines (as
-is the case with DTrace TODO: reference). The reason this problem hasn't been
-previously solved is because being able to arbitrarily instrument code across
-boundaries in a distributed system is a hard problem to solve.
+Instrumentation is an important part of maintaining systems
+\cite{InstrumentationImportance}. Unfortunately, previous techniques lack
+desirable features, such as being able to arbitrarily decide instrumentation at
+run time (as is the case with logs), or being able to instrument code across
+system boundaries such as machines (as is the case with DTrace \cite{DTrace}.
+The reason this problem hasn't been previously solved is because being able to
+arbitrarily instrument code across boundaries in a distributed system is a hard
+problem to solve.
 
 
 \section*{The Solution/Approach}
@@ -123,13 +124,12 @@ Instead, focus on paraphrasing/synopsising, and extracting the essential
 details.}
 
 The authors have introduced a technique called Pivot Tracing, that allows for
-the dynamic instrumentation DTrace and Fay provide (TODO: reference), in
-addition to allowing users correlate information from different points of the
-system as found in causal tracing. (TODO: reference Dapper, x-trace and pip).
-The innovation the paper claims to make is the introduction of a
-\textit{happened-before join} operator, which is based on Lamport's
-happened-before relation. The paper additionally presents a Java-based
-implementation of this system, that can run on various Apache Hadoop
+the dynamic instrumentation DTrace and Fay provide \cite{DTrace}, in addition
+to allowing users correlate information from different points of the system as
+found in causal tracing. The innovation the paper claims to make is the
+introduction of a \textit{happened-before join} operator, which is based on
+Lamport's happened-before relation. The paper additionally presents a
+Java-based implementation of this system, that can run on various Apache Hadoop
 \cite{Hadoop} services. This implementation consists of an agent-based system
 that runs a thread inside each process that can dynamically instrument Java, in
 addition to a \textit{Baggage} library for use by what is being monitored.
