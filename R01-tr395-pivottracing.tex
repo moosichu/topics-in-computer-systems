@@ -43,17 +43,16 @@ Pros:
     % \item Having tracepoints only be references until at given query installed
     % is a good idea that helps reduce overhead.
 
-    \item The motivation is clear and well-presented, allowing the reader of
-    the paper to fully understand the context of the problem going into the
-    paper.
+    \item The motivation is clear and well-presented, allowing the reader to
+    fully understand the context of the problem going into the paper.
 
-    \item Although not part of the paper itself, the filmed presentation is
+    \item Although not part of the paper itself, a filmed presentation of it is
     easily available and complements it nicely.
 
-    \item The discussion section presents some good ideas and presents possible
-    avenues for further work, it also helps frame the authors perspective of
-    the system and helps answer questions that may spring to a reader's mind
-    (such as, is the system Java specific?).
+    \item The discussion section demonstrates some good ideas and presents
+    possible avenues for further work, it also helps frame the authors'
+    perspective of the system and helps answer questions that may spring to a
+    reader's mind (such as, is the system Java specific?).
 
 \end{itemize}
 
@@ -110,9 +109,9 @@ Instrumentation is an important part of maintaining systems
 desirable features, such as being able to arbitrarily decide instrumentation at
 run time (as is the case with logs), or being able to instrument code across
 system boundaries such as machines (as is the case with DTrace \cite{DTrace}.
-The reason this problem hasn't been previously solved is because being able to
-arbitrarily instrument code across boundaries in a distributed system is a hard
-problem to solve.
+The reason this problem hasn't been previously solved is that being able to
+arbitrarily instrument code across boundaries in a distributed system is highly
+challenging.
 
 
 \section*{The Solution/Approach}
@@ -125,8 +124,8 @@ details.}
 
 The authors have introduced a technique called Pivot Tracing, that allows for
 the dynamic instrumentation DTrace and Fay provide \cite{DTrace}, in addition
-to allowing users correlate information from different points of the system as
-found in causal tracing. The innovation the paper claims to make is the
+to allowing users to correlate information from different points of the system
+as found in causal tracing. The innovation the paper claims to make is in the
 introduction of a \textit{happened-before join} operator, which is based on
 Lamport's happened-before relation. The paper additionally presents a
 Java-based implementation of this system, that can run on various Apache Hadoop
@@ -135,6 +134,13 @@ that runs a thread inside each process that can dynamically instrument Java, in
 addition to a \textit{Baggage} library for use by what is being monitored.
 Finally, a front-end client library is used to define tracepoints, compile
 queries and submit the results of this to the agents.
+
+The system works by allowing SQL-like statements to be compiled to an
+\textit{Advice} format, where separate components are distributed to different
+tracepoints in the system. These then allow desired parameters to be bundled
+into tuples called \textit{Baggage}, which are passed along the execution path
+in the distributed system. Desired operations for aggregating information are
+performed local to the tracepoints where possible in as an optimisation.
 
 
 \section*{Evaluation}
@@ -147,7 +153,7 @@ reproduction of the evaluation section(s). In rare cases, systems papers may
 not have any evaluation, in which case write `N/A' below.}
 
 The evaluation of the Pivot Tracing prototype consists of 3 sections: a case
-study, a demonstration of it's end-to-end latency recording features, and an
+study, a demonstration of its end-to-end latency recording features, and an
 analysis of the overhead the system presents. The evaluation aims to answer:
 can Pivot Tracing help solve real-world problems, and what overhead does the
 system present? The former question is answered by a thorough breakdown on how
@@ -168,9 +174,9 @@ kind of throughput overhead analysis - the focus is entirely on latency. Secondl
 although the paper mentions the fact that four separate benchmark were tested,
 only the results from one were displayed.
 
-There is also a lack of analysis of any probe-effect Pivot Tracing could incur
-on a system. Finally, I would have liked to have seen a comparison of the
-performance of Pivot Trace statements that are semantically equivalent to the
+There is also a lack of analysis of any probe-effect that Pivot Tracing could
+incur on a system. Finally, I would have liked to have seen a comparison of the
+performance of Pivot Tracing statements that are semantically equivalent to the
 traces Hadoop itself provides.
 
 
@@ -183,16 +189,16 @@ you, or you thought were cool, or cool-but-flawed? Justify your opinions! Make
 an argument which will convince others of your opinion.}
 
 Overall I think the paper was well presented and understandable, although a
-video of the presentation on it helped a lot with that. The figures especially
-seemed designed around the animations the presentation could display, and were
-harder to parse in the paper itself. Due to my lack of domain expertise with
-using distributed systems, it is hard to evaluate the \textit{usefulness} of a
-system like this and whether the overheads it presents are worth the benefits
-it provides. My largest grievance with the approach is the fairly significant
-changes that had to be made to each module in the Hadoop framework of 50~100
-lines of code. However, if this were merged upstream that would be much less of
-an issue, and in theory an improvement over what these systems already aim t
-provide.
+video of the presentation on it helped greatly with that. The figures
+especially seemed designed around the animations the presentation could
+display, and were harder to parse in the paper itself. Due to my lack of domain
+expertise with using distributed systems, it is hard to evaluate the
+\textit{usefulness} of a system like this and whether the overheads it presents
+are worth the benefits it provides. My largest grievance with the approach is
+the fairly significant changes that had to be made to each module in the Hadoop
+framework of 50~100 lines of code. However, if this were merged upstream that
+would be much less of an issue, and in theory an improvement over what these
+systems already aim to provide.
 
 Finally, the evaluation of the system is far too focused on the case-study
 (over multiple pages), compared to the half-page the performance evaluation
