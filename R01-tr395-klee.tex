@@ -28,9 +28,9 @@ The paper introduces KLEE, a symbolic execution tool for automatically
 generating tests with the aim of achieving high coverage on a wide variety of
 programs. It builds on previous symbolic execution work, applying ideas and
 techniques to programs beyond the hand-picked benchmarks that have previously
-been used in the field. The contribution over the state of the art is in how
-how it aims to tackle the exponential growth in execution paths that can happen
-in symbolic execution. Furthermore it aims to solve what is known as the
+been used in the field. The contribution over the state of the art is how it
+aims to tackle the exponential growth in execution paths that can happen in
+symbolic execution. Furthermore it aims to solve what is known as the
 \textit{environment problem}, where external state can impact the execution of
 programs.
 
@@ -44,8 +44,8 @@ Pros:
 \begin{itemize}
 
     \item Well written, despite no prior experience with the subject matter I
-    never once felt confused or lacking for information. Giving a clear usage
-    examples helped with this a lot.
+    never once felt confused or lacking of information. Giving a clear usage
+    example of the system helped with this.
 
     \item Support for LLVM means that KLEE can more easily support many
     languages which have an LLVM backend. (Although this is never mentioned).
@@ -69,8 +69,8 @@ Cons:
     evaluation appears in other sections making the paper more cluttered than
     necessary.
 
-    \item The paper arguably goes into too much details about specific bugs which
-    KLEE found.
+    \item The paper arguably goes into too much detail about specific bugs
+    which KLEE found.
 
     % \item The environment modelling claims users need not know about the
     % internals of KLEE in order to model the environment. but...
@@ -131,9 +131,9 @@ the problem being solved? Why is it important? If there is prior art, how was
 it insufficient? If the problem had not previously been solved, why not?}
 
 Computer programs are buggy \cite{GitHubBugs}, however, finding those bugs is
-hard \cite{FindingBugsHard}. Therefore, tools to find potential bugs in
-programs is an important problem. Symbolic execution tools aim to help with one
-particular aspect of finding erroneous code, by being able to execute many
+hard \cite{FindingBugsHard}. Therefore, designing tools to find potential bugs
+in programs is an important problem. Symbolic execution tools aim to help with
+one particular aspect of finding erroneous code, by being able to run many
 possible execution paths in a program in order to find statements where an
 undesired state \textit{could} be reached given valid inputs. However, previous
 tools struggled to operate on larger programs (due to exponential path blow-up)
@@ -176,18 +176,17 @@ does the code coverage of KLEE compare with a hand-written test-suite? Is KLEE
 able to produce meaningful results?} The evaluation demonstrates two strengths
 of the system. Firstly, previous symbolic code execution tools don't appear to
 have been able to execute programs of the scale KLEE can handle. Secondly, KLEE
-does manage to achieve comprehensive code coverage, often being able to achieve
-a code coverage of 90\% for the programs tested. The \textit{proof in the
-pudding} comes from the fact that these tests did produce meaningful results,
-and managed to uncover real bugs in some widely used programs such as GNU
-Coreutils \cite{Coreutils}.
+does manage to achieve comprehensive code coverage, often being 90\% for the
+programs tested. The \textit{proof in the pudding} comes from the fact that
+these tests did produce meaningful results, and managed to uncover real bugs in
+some widely used programs such as GNU Coreutils \cite{Coreutils}.
 
-Although the evaluation demonstrates the perceived strengths of KLEE, on of its
-pitfalls comes through from not discussing or exploring its potential
-weaknesses. For example, no mention is made on the type of programs KLEE could
-struggle with, or what could cause it to achieve poor code coverage.
-Furthermore, no mention is made of the running-time beyond stating that one of
-the runs of KLEE took 89 hours.
+Although the evaluation demonstrates the perceived strengths of KLEE, one of
+its pitfalls comes from not discussing or exploring its potential weaknesses.
+For example, no mention is made on the type of programs KLEE could struggle
+with, or what could cause it to achieve poor code coverage. Furthermore, no
+mention is made of the running-time beyond stating that one of the runs of KLEE
+took 89 hours.
 
 Furthermore, comparing the code coverage of a symbolic execution system with
 hand-written unit-tests seems like a flawed comparison, as they test for
